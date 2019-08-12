@@ -112,10 +112,10 @@
                     </div>
                 </div>
             </div>
-            <div class="w-1200">
+            <div class="w-1200" ref="newstab">
                 <div class="clear mt-25">
                     <div class="news float-left">
-                        <div class="news_tab clear" :class="{newsFixed:isFix}" @scroll.native="isfixed" ref="newstab">
+                        <div class="news_tab clear" :class="{newsFixed:isFix}" @scroll.native="isfixed">
                             <div class="news_tit" @click="change">
                                 <a :class="{open:isOpen[0]==n}" data-target="0" href="javascript:;">今日要闻</a>
                                 <a :class="{open:isOpen[1]==n}" data-target="1" href="javascript:;">电子竞技</a>
@@ -369,18 +369,20 @@ export default {
             shows:[true,false,false,false],
             n:0,
             isOpen:[0,1,2,3],
-            isFix:false
+            isFix:false,
+            offsetTop:0,
         }
     },
     created(){
         this.loadMore();
     },
     mounted(){
+        this.offsetT();
         window.addEventListener('scroll',()=>{
-            var scrollTop=document.documentElement.scrollTop;
-            var offsetTop=this.$refs.newstab.offsetTop;
-            console.log(offsetTop)
-            if(scrollTop>=offsetTop){
+            var scrollTop=document.documentElement.scrollTop ||
+                          document.body.scrollTop || 
+                          window.pageYOffset;
+            if(scrollTop>=1220&&scrollTop<=4811){
                 this.isFix=true;
             }else{
                 this.isFix=false;
@@ -388,6 +390,10 @@ export default {
         }, true);
     },
     methods:{
+        offsetT(){
+            this.offsetTop=this.$refs.newstab.offsetTop;
+            console.log(this.offsetTop)
+        },
         change(e){
             this.n=Number(e.target.dataset.target);
             for(var i in this.shows){

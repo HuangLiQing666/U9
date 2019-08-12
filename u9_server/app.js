@@ -53,6 +53,7 @@ app.get("/esnews",(req,res)=>{
     });
 });
 
+/* 每日新闻 */ 
 app.get("/todaynews",(req,res)=>{
     var sql="SELECT nid,news_tit,news_countent,news_time,news_writer,news_pic FROM u9_index_todaynews";
     pool.query(sql,(err,result)=>{
@@ -65,6 +66,18 @@ app.get("/todaynews",(req,res)=>{
     });
 });
 
+/* 官方新闻 */ 
+app.get("/synews",(req,res)=>{
+    var sql="SELECT ofcnewsid,ofc_news,ofc_pic FROM u9_index_synews";
+    pool.query(sql,(err,result)=>{
+        if(err) throw err;
+        if(result.length==0){
+            res.send("-1");
+        }else{
+            res.send(result);
+        }
+    });
+});
 
 
 
