@@ -115,12 +115,12 @@
             <div class="w-1200">
                 <div class="clear mt-25">
                     <div class="news float-left">
-                        <div class="news_tab clear">
+                        <div class="news_tab clear" :class="{newsFixed:isFix}" @scroll.native="isfixed" ref="newstab">
                             <div class="news_tit" @click="change">
-                                <a data-target="0" href="javascript:;">今日要闻</a>
-                                <a data-target="1" href="javascript:;">电子竞技</a>
-                                <a data-target="2" href="javascript:;">单机游戏</a>
-                                <a data-target="3" href="javascript:;">八卦综合</a>
+                                <a :class="{open:isOpen[0]==n}" data-target="0" href="javascript:;">今日要闻</a>
+                                <a :class="{open:isOpen[1]==n}" data-target="1" href="javascript:;">电子竞技</a>
+                                <a :class="{open:isOpen[2]==n}" data-target="2" href="javascript:;">单机游戏</a>
+                                <a :class="{open:isOpen[3]==n}" data-target="3" href="javascript:;">八卦综合</a>
                             </div>
                             <em class="float-right"><a href="javascript:;"><i></i>成为作者</a></em>
                         </div>
@@ -368,22 +368,35 @@ export default {
             todatNews:[{default:""}],
             shows:[true,false,false,false],
             n:0,
-            isOpen:[0,1,2,3]
+            isOpen:[0,1,2,3],
+            isFix:false
         }
     },
     created(){
-        this.loadMore()
+        this.loadMore();
+    },
+    mounted(){
+        window.addEventListener('scroll',()=>{
+            var scrollTop=document.documentElement.scrollTop;
+            var offsetTop=this.$refs.newstab.offsetTop;
+            console.log(offsetTop)
+            if(scrollTop>=offsetTop){
+                this.isFix=true;
+            }else{
+                this.isFix=false;
+            }
+        }, true);
     },
     methods:{
         change(e){
             this.n=Number(e.target.dataset.target);
             for(var i in this.shows){
                 if(i==e.target.dataset.target){
-                    // this.shows[i]=true
-                    this.$set(this.shows,i,true) 
+                    // this.shows[i]=true 
+                    this.$set(this.shows,i,true);
                 }else{
-                    // this.shows[i]=false
-                    this.$set(this.shows,i,false)  
+                    // this.shows[i]=false 
+                    this.$set(this.shows,i,false);
                 }
             }
             console.log(this.shows)
