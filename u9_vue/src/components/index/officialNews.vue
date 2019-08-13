@@ -3,9 +3,7 @@
         <div class="rows mt-25" id="#multipleColumn" @mouseover="news(-1)" @mouseout="news(1)">
             <div class="title clear">
                 <ul id="title_tabs">
-                    <li @mouseenter="change(0)"></li>
-                    <li @mouseenter="change(1)"></li>
-                    <li @mouseenter="change(2)"></li>
+                    <li v-for="(item,i) of titList" :key="i" @mouseenter="change(item)" :class="{synews_open:isOpen==item}"></li>
                 </ul>
                 <h2>官方新闻</h2>
             </div>
@@ -61,6 +59,8 @@ export default {
             left:0,
             isOn:true,
             isCar:true,
+            titList:[1,2,3],
+            isOpen:1
         }
     },
     created(){
@@ -99,13 +99,16 @@ export default {
                     i=to;
                 }
                 if(i==3){
+                    i=0;
                     setTimeout(()=>{
-                        i=0;
                         this.isOn=false;
                         this.left=0;
                     },500);
                 }
                 this.left=-WIDTH*i+"px";
+                // setTimeout(()=>{
+                       this.isOpen=i+1;
+                    // },500);
             },2000)
         },
         loadMore(){
@@ -140,6 +143,11 @@ export default {
 }
 </script>
 <style scoped>
+ul#title_tabs>li.synews_open{
+    width:14px;
+    background:#f07800;
+    border-radius:5px;
+}
 #multipleColumn{
     width:400px;
 }

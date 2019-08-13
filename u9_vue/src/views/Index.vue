@@ -1,6 +1,5 @@
 <template>
     <div>
-        <div class="login_mengban" :class="{canLogin:isLogin}"></div>
         <my-header></my-header>
         <article>
             <div class="navbox">
@@ -331,7 +330,6 @@ export default {
             isOpen:[0,1,2,3],
             isFix:false,
             offsetTop:0,
-            isLogin:true
         }
     },
     created(){
