@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div class="login_mengban" :class="{canLogin:isLogin}"></div>
         <my-header></my-header>
         <article>
             <div class="navbox">
@@ -309,49 +310,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="rows mt-25 multipleColumn">
-                            <div class="title clear">
-                                <ul id="title_tabs">
-                                    <li>1</li>
-                                    <li>2</li>
-                                    <li>3</li>
-                                </ul>
-                                <h2>官方新闻</h2>
-                            </div>
-                            <div class="bd">
-                                <div class="bd_tempWrap">
-                                    <div class="rdbox">
-                                        <div class="bd_con">
-                                            <div class="hidpic clear">
-                                                <a href="">
-                                                    <img src="http://localhost:3020/image/index/201907221214368591.jpg" alt="">
-                                                    <i></i>
-                                                </a>
-                                                <a href="">
-                                                    <img src="http://localhost:3020/image/index/201907181159237341.jpg" alt="">
-                                                    <i></i>
-                                                </a>
-                                                <a href="">
-                                                    <img src="http://localhost:3020/image/index/201907171030454211.jpg" alt="">
-                                                    <i></i>
-                                                </a>
-                                                <a href="">
-                                                    <img src="http://localhost:3020/image/index/201907151118398121.jpg" alt="">
-                                                    <i></i>
-                                                </a>
-                                            </div>
-                                            <ul class="synews mt-20">
-                                                <li><a title="海潮逆涌《阴阳师》海国篇全新版本即将来袭!" href="">海潮逆涌《阴阳师》海国篇全新版本即将来袭!</a></li>
-                                                <li><a title="《梦幻西游》电脑版2019暑期全新资料片今日开测" href="">《梦幻西游》电脑版2019暑期全新资料片今日开测</a></li>
-                                                <li><a title="千锤百炼、想你所想——天刀手游飞花测今日开启" href="">千锤百炼、想你所想——天刀手游飞花测今日开启</a></li>
-                                                <li><a title="ChinaJoy2019英特尔再度包馆 盛宴别错过" href="">ChinaJoy2019英特尔再度包馆 盛宴别错过</a></li>
-                                                <li><a title="《我的起源》线下见面会重磅来袭！" href="">《我的起源》线下见面会重磅来袭！</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <officialnews/>
                     </div>
                 </div>
             </div>
@@ -362,6 +321,7 @@
 <script>
 import CarouselIndex from "../components/index/carousel-index.vue"
 import esNews from "../components/index/esNews.vue"
+import officialNews from "../components/index/officialNews.vue"
 export default {
     data(){
         return {
@@ -371,6 +331,7 @@ export default {
             isOpen:[0,1,2,3],
             isFix:false,
             offsetTop:0,
+            isLogin:true
         }
     },
     created(){
@@ -415,11 +376,21 @@ export default {
     },
     components:{
         "carousel-index":CarouselIndex,
-        "esnews":esNews
+        "esnews":esNews,
+        "officialnews":officialNews
     }
 }
 </script>
 <style scoped>
+.login_mengban{
+    width:100%;height:100%;
+    position: fixed;
+    background:rgba(0,0,0,0.5);
+    z-index:10000;
+}
+.canLogin{
+    display: none;
+}
 .w-1200{
     width:1200px;
     margin:0 auto;
@@ -868,64 +839,4 @@ a:hover .scale_img{transform: scale(1.1);}
     background:url("http://localhost:3020/image/index/li.png") 0 center no-repeat;
     padding-left: 15px;
 }
-ul#title_tabs{
-    float: right;
-    width:41px;height:6px;
-    background: #f9f9f9;
-    margin-top: 12px;
-    overflow: hidden;
-    list-style: none;
-}
-ul#title_tabs li{
-    float: left;
-    width:6px;height:6px;
-    background: #cccccc;
-    overflow: hidden;
-    margin-right: 5px;
-    cursor: pointer;
-    border-radius:50%;
-}
-.multipleColumn>.title h2::before{
-    width: 178px;
-}
-div.bd_tempWrap{
-    width: 400px;
-    position: relative;
-    overflow: hidden;
-}
-div.hidpic{width:412px;overflow: hidden;}
-div.hidpic a{
-    width:194px;height:90px;
-    float: left;
-    overflow: hidden;
-    margin:14px 12px 0 0;
-    position: relative;
-}
-div.hidpic>a img{
-    width:194px;height:90px;
-    display: block; 
-}
-div.hidpic>a i{
-    width:30px;height:30px;
-    background:url("http://localhost:3020/image/index/v.png") 0 0 no-repeat;
-    background-size:30px 30px;
-    position: absolute;
-    left: 82px;top:30px; 
-}
-div.bd>.bd_tempWrap>.rdbox>div.con{
-    float: left;
-    width:400px;
-}
-ul.synews li{
-    height:36px;
-    font-size:16px;
-    line-height: 36px;
-    background: url("http://localhost:3020/image/index/lblistbg.png") 6px -36px no-repeat;
-    padding-left: 30px;
-    overflow: hidden;
-}
-ul.synews>li:hover{
-    background: url("http://localhost:3020/image/index/lblistbg.png") 6px 0 no-repeat;
-}
-ul.synews>li a{color:#555;}
 </style>

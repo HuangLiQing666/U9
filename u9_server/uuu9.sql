@@ -152,39 +152,40 @@ INSERT INTO u9_index_todaynews VALUES
 (NULL,"赛博朋克2077 优化出色 主机及低配PC也有惊艳效果","CDPR已经连着两届E3为我们带来了《赛博朋克2077》的演示，而在官方的演示中，他们都使用了性能非常强悍的PC，也让不少玩家担心游戏在现世代主机和低配...","07-09","覃文峰","201907091142484841.jpg");
 
 /*官方新闻*/
+USE u9;
 CREATE TABLE u9_index_synews(
   ofcid INT PRIMARY KEY AUTO_INCREMENT,
-  Ofc_news VARCHAR(255)
+  Ofc_news VARCHAR(255),
+  ofc_pic VARCHAR(255)
 );
 
 INSERT INTO u9_index_synews VALUES
-(NULL,"海潮逆涌《阴阳师》海国篇全新版本即将来袭!"),
-(NULL,"《梦幻西游》电脑版2019暑期全新资料片今日开测"),
-(NULL,"千锤百炼、想你所想——天刀手游飞花测今日开启"),
-(NULL,"《我的起源》线下见面会重磅来袭!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战"),
-(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战");
-
-ALTER TABLE u9_index_synews ADD COLUMN ofc_pic VARCHAR(255);
+(NULL,"海潮逆涌《阴阳师》海国篇全新版本即将来袭!","201907221214368591.jpg"),
+(NULL,"《梦幻西游》电脑版2019暑期全新资料片今日开测","201907181159237341.jpg"),
+(NULL,"千锤百炼、想你所想——天刀手游飞花测今日开启","201907171030454211.jpg"),
+(NULL,"《我的起源》线下见面会重磅来袭!","201907151118398121.jpg"),
+(NULL,"ChinaJoy2019英特尔再度包馆 盛宴别错过",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"「梦间集」IP新作 国风赛博手游《梦间集2》首曝!",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
+(NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL);

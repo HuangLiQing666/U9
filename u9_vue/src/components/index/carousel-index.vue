@@ -56,6 +56,7 @@ export default {
         },
         change(l){
             var to=l-1;
+            this.moveTo(to);
         },
         moveTo(to){
             var timer=setInterval(()=>{

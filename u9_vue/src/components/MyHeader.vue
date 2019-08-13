@@ -16,8 +16,8 @@
                 <a href="">5月份市场数据：《堡垒之夜》《PUBG》热度不减</a>
             </div>
             <div class="header_reg_login py-2 text-right float-right">
-                <a href="">登录</a>
-                <a href="">注册</a>
+                <a href="javascript:;"  @click="login">登录</a>
+                <a href="javascript:;" @click="sign">注册</a>
             </div>
             <div class="header_other py-2 float-right">
                 <a href="">官方微博</a>
@@ -60,7 +60,19 @@
 </template>
 <script>
 export default {
-    
+    data(){
+        return {
+
+        }
+    },
+    methods:{
+        login(){
+
+        },
+        sign(){
+            
+        },
+    }
 }
 </script>
 <style scoped>

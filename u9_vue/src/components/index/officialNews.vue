@@ -1,17 +1,17 @@
 <template>
     <div>
-        <div class="rows mt-25 multipleColumn">
+        <div class="rows mt-25" id="#multipleColumn" @mouseover="news(-1)" @mouseout="news(1)">
             <div class="title clear">
                 <ul id="title_tabs">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
+                    <li @mouseenter="change(0)"></li>
+                    <li @mouseenter="change(1)"></li>
+                    <li @mouseenter="change(2)"></li>
                 </ul>
                 <h2>官方新闻</h2>
             </div>
             <div class="bd">
                 <div class="bd_tempWrap">
-                    <div class="rdbox">
+                    <div id="rdbox" :style="{marginLeft:left}" :class="{on:isOn}">
                         <div class="bd_con">
                             <div class="hidpic clear">
                                 <a href="javascript:;" v-for="(item,i) of newsPic" :key="i">
@@ -57,13 +57,57 @@ export default {
             newsPic:[],
             firNews:[],
             secNews:[],
-            lasNews:[]
+            lasNews:[],
+            left:0,
+            isOn:true,
+            isCar:true,
         }
     },
     created(){
         this.loadMore()
     },
+    mounted(){
+        // var timer=setInterval(()=>{this.newsCarousel()},2000);
+        this.newsCarousel();
+        // multipleColumn.addEventListener("mouseout",()=>{
+        //     setInterval
+        // });
+    },
     methods:{
+        news(n){
+            if(n==-1){
+                this.isCar=false;
+            }else{
+                this.isCar=true;
+                this.newsCarousel();
+            }
+        },
+        change(l){
+            this.newsCarousel(l)
+        },
+        newsCarousel(to){
+            var WIDTH=400;
+            var i=0;
+            var timer=setInterval(()=>{
+                if(!this.isCar){
+                    clearInterval(timer);
+                }
+                this.isOn=true;
+                if(to==undefined){
+                    i++;
+                }else{
+                    i=to;
+                }
+                if(i==3){
+                    setTimeout(()=>{
+                        i=0;
+                        this.isOn=false;
+                        this.left=0;
+                    },500);
+                }
+                this.left=-WIDTH*i+"px";
+            },2000)
+        },
         loadMore(){
             this.axios.get("synews").then(res=>{
                 var n=res.data;
@@ -96,12 +140,11 @@ export default {
 }
 </script>
 <style scoped>
-.multipleColumn{
+#multipleColumn{
     width:400px;
 }
-.rdbox{
+#rdbox{
     width:2000px;
-    position: relative;
     overflow: hidden;
 }
 .title{
@@ -152,7 +195,7 @@ ul#title_tabs li{
     cursor: pointer;
     border-radius:50%;
 }
-.multipleColumn>.title h2::before{
+#multipleColumn>.title h2::before{
     width: 178px;
 }
 div.bd_tempWrap{
@@ -179,7 +222,7 @@ div.hidpic>a i{
     position: absolute;
     left: 82px;top:30px; 
 }
-div.bd>.bd_tempWrap>.rdbox>div.bd_con{
+div.bd>.bd_tempWrap>#rdbox>div.bd_con{
     float: left;
     width:400px;
 }
