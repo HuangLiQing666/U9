@@ -1,29 +1,81 @@
 <template>
     <div>
-        <div class="login_mengban" :class="{canLogin:isLogin}"></div>
+        <div class="login_mengban" :class="{canLogin:isShow}"></div>
         <div class="login_box" :class="{canLogin:isLogin}">
             <div class="login_tit">
                 <h2>登录</h2>
-                <em></em>
+                <em @click="loginClose(1)"></em>
             </div>
             <div class="login_con">
                 <div class="form_group mt-10">
                     <div class="signup_group">
-                        <input type="text" placeholder="请输入手机号/账号" class="input_text">
+                        <input type="text" placeholder="请输入手机号/账号" class="input_text" @blur="cansign" id="login_name">
+                        <span :class="{error:isErr[0]}">{{spCount[0]}}</span>
                     </div>
                 </div>
                 <div class="form_group mt-10">
                     <div class="signup_group">
                         <input type="password" placeholder="密码" class="input_text">
+                        <span :class="{error:isErr[1]}"></span>
                     </div>
                 </div>
                 <div class="form_group mt-10">
-                    <button type="submit" class="login_btn">登录</button>
+                    <button type="submit" class="login_btn" >登录</button>
                 </div>
                 <p class="view_clause">
                     <em><a href="javascript:;" class="move_lost">忘记密码?</a></em>
                     还没有账号?
-                    <a href="javascript:;" class="move_signup">立即注册</a>
+                    <a href="javascript:;" class="move_signup" @click="login(-1)">立即注册</a>
+                </p>
+                <div class="other_login">
+                    <h3 class="mt-15">其他账号登录</h3>
+                    <ul class="sj_login">
+                        <li><a href="javascript:;" class="ico_qq"></a></li>
+                        <li><a href="javascript:;" class="ico_wx"></a></li>
+                        <li><a href="javascript:;" class="ico_wb"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="signup_box" :class="{canLogin:isSign}">
+            <div class="login_tit">
+                <h2>登录</h2>
+                <em @click="loginClose(-1)"></em>
+            </div>
+            <div class="login_con">
+                <div class="form_group mt-10">
+                    <div class="signup_group">
+                        <input type="text" placeholder="请输入手机号" class="input_text">
+                        <span :class="{error:isErr[2]}"></span>
+                    </div>
+                </div>
+                <div class="form_group mt-10 clear">
+                    <div class="signup_group">
+                        <input type="text" placeholder="请输入验证码" class="input_sryzm">
+                        <input type="button" class="input_hqyzm" value="获取验证码">
+                    </div>
+                </div>
+                <div class="form_group mt-10">
+                    <div class="signup_group">
+                        <input type="password" placeholder="请输入密码（字母和数字组合，6至12位）" class="input_text">
+                        <span :class="{error:isErr[3]}"></span>
+                    </div>
+                </div>
+                <div class="form_group mt-10">
+                    <div class="signup_group check_box">
+                        <input type="checkbox" class="signup_check" checked>
+                        我已阅读并同意
+                        <a href="javascript:;">用户协议</a>
+                        和
+                        <a href="javascript:;">隐私条款</a>
+                    </div>
+                </div>
+                <div class="form_group mt-10">
+                    <button type="submit" class="login_btn">注册</button>
+                </div>
+                <p class="view_clause">
+                    已有账号马上
+                    <a href="javascript:;" class="move_login" @click="login(1)">登录</a>
                 </p>
                 <div class="other_login">
                     <h3 class="mt-15">其他账号登录</h3>
@@ -51,8 +103,8 @@
                         <a href="">5月份市场数据：《堡垒之夜》《PUBG》热度不减</a>
                     </div>
                     <div class="header_reg_login py-2 text-right float-right">
-                        <a href="javascript:;"  @click="login">登录</a>
-                        <a href="javascript:;" @click="sign">注册</a>
+                        <a href="javascript:;"  @click="login(1)">登录</a>
+                        <a href="javascript:;" @click="login(-1)">注册</a>
                     </div>
                     <div class="header_other py-2 float-right">
                         <a href="">官方微博</a>
@@ -97,20 +149,51 @@
 export default {
     data(){
         return {
-            isLogin:true
+            isShow:true,
+            isLogin:true,
+            isSign:true,
+            isErr:["","","",""],
+            spCount:["","","",""]
         }
     },
     methods:{
-        login(){
-            this.isLogin=false;
+        cansign(){
+            var reg=/^[a-zA-Z0-9_-]{4,16}$/;
+            if(reg.test(login_name.value)==false){
+                this.$set(this.isErr,0,true)
+                this.$set(this.spCount,0,"用户名格式不正确")
+            }
         },
-        sign(){
-            this.isLogin=false;
+        loginClose(l){
+            this.isShow=true;
+            if(l==1){
+                this.isLogin=true;
+            }else{
+                this.isSign=true;
+            }
+        },
+        login(n){
+            this.isShow=false;
+            if(n==1){
+                this.isLogin=false;
+                this.isSign=true;
+            }else{
+                this.isSign=false;
+                this.isLogin=true;;
+            }
         },
     }
 }
 </script>
 <style scoped>
+span.error{
+    color:#ff5758;
+    line-height: 14px;
+    background:url("http://localhost:3020/image/header/error-notic.png") 0 0 no-repeat;
+    padding-left: 20px;
+    display: block;
+    margin-top:5px;
+}
 /* 注册页面 */
 div.login_box{
     width:590px;height:400px;
@@ -121,18 +204,18 @@ div.login_box{
     z-index: 10001;
     background:url("http://localhost:3020/image/header/login_1.JPG") #fff left top no-repeat;
 }
-div.login_box>div.login_tit{
+div.login_tit{
     height:55px;
     border-bottom:1px solid #ebebeb;
     padding:0 20px;
 }
-div.login_box>div.login_tit h2{
+div.login_tit h2{
     float:left;
     font-size:20px;
     color:#333333;
     line-height: 55px;
 }
-div.login_box>div.login_tit em{
+div.login_tit em{
     float: right;
     width:14px;height:14px;
     background: url("http://localhost:3020/image/header/closed.png") 0 0 no-repeat;
@@ -141,7 +224,7 @@ div.login_box>div.login_tit em{
     margin-top: 20px;
     cursor:pointer;
 }
-div.login_box>div.login_con{
+div.login_con{
     padding:10px 30px 0 30px;
 }
 div.signup_group>.input_text{
@@ -210,6 +293,56 @@ div.other_login>ul.sj_login>li>a{
 div.other_login>ul.sj_login>li>a.ico_qq{background-position: 0 0;}
 div.other_login>ul.sj_login>li>a.ico_wx{background-position: -36px 0;}
 div.other_login>ul.sj_login>li>a.ico_wb{background-position: -72px 0;}
+/* 注册 */
+div.signup_box{
+    width:590px;height:auto;
+    padding:0 0 0 250px;
+    position: fixed;
+    top:180px;left:50%;
+    margin-left:-295px;
+    z-index: 10001;
+    background:url("http://localhost:3020/image/header/login_1.JPG") #fff left center no-repeat;
+}
+div.signup_group>.input_sryzm{
+    width:165px;height:42px;
+    float: left;
+    display:block;
+    border:1px solid #dddddd;
+    text-indent: 12px;
+    line-height: 42px;
+    color:#333333;
+    font-size:15px;
+    border-radius:5px;
+}
+div.signup_group>.input_hqyzm{
+    width:103px;height:40px;
+    float: right;
+    border-left:none;
+    cursor: pointer;
+    border:1px solid #18c26a;
+    background: #1fd477;
+    color:#fff;
+    font-size:15px;
+    border-radius:5px;
+}
+div.check_box{
+    line-height: 20px;
+    font-size:14px;
+    color:#333333;
+    margin-top: 25px;
+}
+div.check_box>.signup_check{
+    margin-right:8px;
+}
+div.check_box>a{
+    color:#406599;
+}
+p.view_clause>a{
+    padding-left:3px;
+}
+p.view_clause>.move_login{
+    color:#ff5758;
+}
 .login_mengban{
     width:100%;height:100%;
     position: fixed;
