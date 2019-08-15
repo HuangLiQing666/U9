@@ -9,18 +9,16 @@
             <div class="login_con">
                 <div class="form_group mt-10">
                     <div class="signup_group">
-                        <input type="text" placeholder="请输入手机号/账号" class="input_text" @blur="cansign" id="login_name">
-                        <span :class="{error:isErr[0]}">{{spCount[0]}}</span>
+                        <input type="text" placeholder="请输入手机号/账号" class="input_text">
                     </div>
                 </div>
                 <div class="form_group mt-10">
                     <div class="signup_group">
                         <input type="password" placeholder="密码" class="input_text">
-                        <span :class="{error:isErr[1]}"></span>
                     </div>
                 </div>
                 <div class="form_group mt-10">
-                    <button type="submit" class="login_btn" >登录</button>
+                    <button type="submit" class="login_btn" @click="loginup">登录</button>
                 </div>
                 <p class="view_clause">
                     <em><a href="javascript:;" class="move_lost">忘记密码?</a></em>
@@ -45,8 +43,8 @@
             <div class="login_con">
                 <div class="form_group mt-10">
                     <div class="signup_group">
-                        <input type="text" placeholder="请输入手机号" class="input_text">
-                        <span :class="{error:isErr[2]}"></span>
+                        <input type="text" placeholder="请输入手机号" class="input_text" @blur="canSignin(1)" id="login_uname">
+                        <span :class="{error:isErr[0]}">{{spCount[0]}}</span>
                     </div>
                 </div>
                 <div class="form_group mt-10 clear">
@@ -57,8 +55,8 @@
                 </div>
                 <div class="form_group mt-10">
                     <div class="signup_group">
-                        <input type="password" placeholder="请输入密码（字母和数字组合，6至12位）" class="input_text">
-                        <span :class="{error:isErr[3]}"></span>
+                        <input type="password" placeholder="请输入密码（字母和数字组合，6至12位）" class="input_text" @blur="canSignin(-1)" id="login_upwd">
+                        <span :class="{error:isErr[1]}">{{spCount[1]}}</span>
                     </div>
                 </div>
                 <div class="form_group mt-10">
@@ -71,14 +69,14 @@
                     </div>
                 </div>
                 <div class="form_group mt-10">
-                    <button type="submit" class="login_btn">注册</button>
+                    <button type="submit" class="sign_btn">注册</button>
                 </div>
                 <p class="view_clause">
                     已有账号马上
                     <a href="javascript:;" class="move_login" @click="login(1)">登录</a>
                 </p>
                 <div class="other_login">
-                    <h3 class="mt-15">其他账号登录</h3>
+                    <h3 class="mt-10">其他账号登录</h3>
                     <ul class="sj_login">
                         <li><a href="javascript:;" class="ico_qq"></a></li>
                         <li><a href="javascript:;" class="ico_wx"></a></li>
@@ -152,16 +150,32 @@ export default {
             isShow:true,
             isLogin:true,
             isSign:true,
-            isErr:["","","",""],
-            spCount:["","","",""]
+            isErr:["",""],
+            spCount:["",""]
         }
     },
     methods:{
-        cansign(){
-            var reg=/^[a-zA-Z0-9_-]{4,16}$/;
-            if(reg.test(login_name.value)==false){
-                this.$set(this.isErr,0,true)
-                this.$set(this.spCount,0,"用户名格式不正确")
+        canSignin(n){
+            var unameReg=/^[a-zA-Z0-9_-]{4,16}$/;
+            var upwdReg=/^\w{6,12}$/;
+            if(n==1){
+                if(unameReg.test(login_uname.value)==false){
+                    this.$set(this.isErr,0,true)
+                    this.$set(this.spCount,0,"用户名格式不正确")
+                }else{
+                    this.$set(this.isErr,0,false);
+                    this.$set(this.spCount,0,"");
+                }
+            }else{
+                if(upwdReg.test(login_upwd.value)==false){
+                    console.log(this.isErr)
+                    this.$set(this.isErr,1,true);
+                    this.$set(this.spCount,1,"密码格式不正确");
+                }else{
+                    console.log(111)
+                    this.$set(this.isErr,1,false);
+                    this.$set(this.spCount,1,"");
+                }
             }
         },
         loginClose(l){
@@ -236,7 +250,7 @@ div.signup_group>.input_text{
     color:#333333;
     padding-left: 12px;
 }
-div.form_group>.login_btn{
+.login_btn,.sign_btn{
     width:280px;height:48px;
     display: block;
     background: #ff7700;
@@ -249,10 +263,10 @@ div.form_group>.login_btn{
     border-radius:5px;
 }
 p.view_clause{
-    line-height: 42px;
+    line-height: 35px;
     color:#bcbcbc;
     font-size:14px;
-    height:42px;
+    height:35px;
 }
 p.view_clause>em{
     float:right;
@@ -274,6 +288,7 @@ div.other_login>h3{
     line-height: 18px;
     color:#bcbcbc;
     font-size:14px;
+    
 }
 div.other_login>ul.sj_login{
     width:108px;
@@ -295,13 +310,13 @@ div.other_login>ul.sj_login>li>a.ico_wx{background-position: -36px 0;}
 div.other_login>ul.sj_login>li>a.ico_wb{background-position: -72px 0;}
 /* 注册 */
 div.signup_box{
-    width:590px;height:auto;
-    padding:0 0 0 250px;
+    width:590px;height:456px;
+    padding:0 0 20px 250px;
     position: fixed;
     top:180px;left:50%;
     margin-left:-295px;
     z-index: 10001;
-    background:url("http://localhost:3020/image/header/login_1.JPG") #fff left center no-repeat;
+    background:url("http://localhost:3020/image/header/signupbg.jpg") #fff left top no-repeat;
 }
 div.signup_group>.input_sryzm{
     width:165px;height:42px;
@@ -329,7 +344,7 @@ div.check_box{
     line-height: 20px;
     font-size:14px;
     color:#333333;
-    margin-top: 25px;
+    margin-top: 15px;
 }
 div.check_box>.signup_check{
     margin-right:8px;
@@ -342,6 +357,9 @@ p.view_clause>a{
 }
 p.view_clause>.move_login{
     color:#ff5758;
+}
+.sign_btn{
+    margin-top:0;
 }
 .login_mengban{
     width:100%;height:100%;
