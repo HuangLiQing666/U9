@@ -380,15 +380,6 @@ export default {
 }
 </script>
 <style scoped>
-.login_mengban{
-    width:100%;height:100%;
-    position: fixed;
-    background:rgba(0,0,0,0.5);
-    z-index:10000;
-}
-.canLogin{
-    display: none;
-}
 .w-1200{
     width:1200px;
     margin:0 auto;

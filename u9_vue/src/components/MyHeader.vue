@@ -9,12 +9,12 @@
             <div class="login_con">
                 <div class="form_group mt-10">
                     <div class="signup_group">
-                        <input type="text" placeholder="请输入手机号/账号" class="input_text">
+                        <input type="text" placeholder="请输入手机号/账号" class="input_text" id="login_uname">
                     </div>
                 </div>
                 <div class="form_group mt-10">
                     <div class="signup_group">
-                        <input type="password" placeholder="密码" class="input_text">
+                        <input type="password" placeholder="密码" class="input_text" id="login_upwd">
                     </div>
                 </div>
                 <div class="form_group mt-10">
@@ -43,7 +43,7 @@
             <div class="login_con">
                 <div class="form_group mt-10">
                     <div class="signup_group">
-                        <input type="text" placeholder="请输入手机号" class="input_text" @blur="canSignin(1)" id="login_uname">
+                        <input type="text" placeholder="请输入手机号" class="input_text" @blur="canSignin(1)" id="sign_uname">
                         <span :class="{error:isErr[0]}">{{spCount[0]}}</span>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="form_group mt-10">
                     <div class="signup_group">
-                        <input type="password" placeholder="请输入密码（字母和数字组合，6至12位）" class="input_text" @blur="canSignin(-1)" id="login_upwd">
+                        <input type="password" placeholder="请输入密码（字母和数字组合，6至12位）" class="input_text" @blur="canSignin(-1)" id="sign_upwd">
                         <span :class="{error:isErr[1]}">{{spCount[1]}}</span>
                     </div>
                 </div>
@@ -85,6 +85,13 @@
                 </div>
             </div>
         </div>
+        <!-- 登录失败 用户名或密码错误 -->
+        <transition name="prompt" key="pro1"> 
+            <div class="login_prompt" v-if="loginErr">
+                <div class="login_prompt_faile"></div>
+                <h4 id="prompt_text">{{errCount}}</h4>
+            </div>
+        </transition>
         <header id="header">
             <img src="http://localhost:3020/image/header/top_brank.jpg" alt="">
             <div class="header">
@@ -144,6 +151,7 @@
     </div>
 </template>
 <script>
+import { setTimeout } from 'timers';
 export default {
     data(){
         return {
@@ -151,11 +159,18 @@ export default {
             isLogin:true,
             isSign:true,
             isErr:["",""],
-            spCount:["",""]
+            spCount:["",""],
+            loginErr:false,
+            errCount:"",
         }
     },
     methods:{
         loginup(){
+            if(login_uname.value==""||login_upwd.value==""){
+                this.errCount="用户名或密码不能为空";
+                this.loginErr=true;
+                setTimeout(()=>{this.loginErr=false},2000);
+            }
             this.axios.post("loginup",{
                 uname:1111,
                 upwd:111
@@ -167,7 +182,7 @@ export default {
             var unameReg=/^[a-zA-Z0-9_-]{4,16}$/;
             var upwdReg=/^\w{6,12}$/;
             if(n==1){
-                if(unameReg.test(login_uname.value)==false){
+                if(unameReg.test(sign_uname.value)==false){
                     this.$set(this.isErr,0,true)
                     this.$set(this.spCount,0,"用户名格式不正确")
                 }else{
@@ -175,7 +190,7 @@ export default {
                     this.$set(this.spCount,0,"");
                 }
             }else{
-                if(upwdReg.test(login_upwd.value)==false){
+                if(upwdReg.test(sign_upwd.value)==false){
                     this.$set(this.isErr,1,true);
                     this.$set(this.spCount,1,"密码格式不正确");
                 }else{
@@ -367,6 +382,35 @@ p.view_clause>.move_login{
 }
 .sign_btn{
     margin-top:0;
+}
+/* 注册 登录 失败 */
+div.login_prompt{
+    width:250px;height:120px;
+    position: fixed;
+    background:rgba(0,0,0,0.5);
+    z-index: 10001;
+    top:280px;
+    left:50%;
+    margin-left:-90px;
+    border-radius:10px;
+    padding:18px 0;
+}
+.prompt-enter-active,.prompt-leave-active{
+    transition: opacity 2s;
+}
+.prompt-enter,.prompt-leave-to{
+    opacity: 0;
+}
+div.login_prompt_faile{
+    width:32px;height:32px;
+    background:url("http://localhost:3020/image/header/u9-ts-tipsx.png") 0 0 no-repeat;
+    margin:0 auto;
+}
+h4#prompt_text{
+    font-size:18px;
+    line-height: 36px;
+    color:#fff;
+    text-align: center;
 }
 .login_mengban{
     width:100%;height:100%;
