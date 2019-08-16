@@ -155,6 +155,14 @@ export default {
         }
     },
     methods:{
+        loginup(){
+            this.axios.post("loginup",{
+                uname:1111,
+                upwd:111
+            }).then(res=>{
+                console.log(res);
+            })
+        },
         canSignin(n){
             var unameReg=/^[a-zA-Z0-9_-]{4,16}$/;
             var upwdReg=/^\w{6,12}$/;
@@ -168,7 +176,6 @@ export default {
                 }
             }else{
                 if(upwdReg.test(login_upwd.value)==false){
-                    console.log(this.isErr)
                     this.$set(this.isErr,1,true);
                     this.$set(this.spCount,1,"密码格式不正确");
                 }else{

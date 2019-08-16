@@ -79,6 +79,19 @@ app.get("/synews",(req,res)=>{
     });
 });
 
+/*登录验证*/ 
+app.post("/loginup",(req,res)=>{
+   var data="";
+   req.on("data",function(chunk){
+       data+=chunk;
+   });
+   req.on("end",function(){
+        var params=JSON.parse(data);
+        var uname=params.uname;
+        var upwd=params.upwd;
+        var sql="";
+    });
+});
 
 
 
