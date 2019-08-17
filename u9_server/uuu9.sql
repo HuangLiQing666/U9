@@ -189,3 +189,12 @@ INSERT INTO u9_index_synews VALUES
 (NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
 (NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL),
 (NULL,"云集Yourcraft 《我的世界》起床战争赛等你来战",NULL);
+
+USE u9;
+CREATE TABLE u9_user(
+  uid INT PRIMARY KEY AUTO_INCREMENT,
+  uname VARCHAR(32),
+  upwd VARCHAR(32)
+);
+
+ALTER TABLE u9_user ADD COLUMN nick_name VARCHAR(64) NOT null;

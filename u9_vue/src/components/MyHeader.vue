@@ -4,7 +4,7 @@
         <div class="login_box" :class="{canLogin:isLogin}">
             <div class="login_tit">
                 <h2>登录</h2>
-                <em @click="loginClose(1)"></em>
+                <em @click="loginClose(1)" class="tit_closed"></em>
             </div>
             <div class="login_con">
                 <div class="form_group mt-10">
@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="form_group mt-10">
-                    <button type="submit" class="login_btn" @click="loginup">登录</button>
+                    <button type="submit" class="login_btn" @click="loginUp">登录</button>
                 </div>
                 <p class="view_clause">
                     <em><a href="javascript:;" class="move_lost">忘记密码?</a></em>
@@ -38,7 +38,7 @@
         <div class="signup_box" :class="{canLogin:isSign}">
             <div class="login_tit">
                 <h2>登录</h2>
-                <em @click="loginClose(-1)"></em>
+                <em @click="loginClose(-1)" class="tit_closed"></em>
             </div>
             <div class="login_con">
                 <div class="form_group mt-10">
@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="form_group mt-10">
-                    <button type="submit" class="sign_btn">注册</button>
+                    <button type="submit" class="sign_btn" @click="signIn">注册</button>
                 </div>
                 <p class="view_clause">
                     已有账号马上
@@ -85,13 +85,34 @@
                 </div>
             </div>
         </div>
-        <!-- 登录失败 用户名或密码错误 -->
-        <transition name="prompt" key="pro1"> 
+        <!-- 登录失败 注册失败 -->
+        <transition name="promptFaile" key="pro1"> 
             <div class="login_prompt" v-if="loginErr">
                 <div class="login_prompt_faile"></div>
                 <h4 id="prompt_text">{{errCount}}</h4>
             </div>
         </transition>
+        <!-- 注册成功 登录成功-->
+        <transition name="promptSuc" key="pro2">
+            <div class="sign_prompt" v-if="signSuc">
+                <div class="login_prompt_suc"></div>
+                <h4 id="prompt_text">{{sucCount}}</h4>
+            </div>
+        </transition>
+        <!-- 登录成功 输入昵称 -->
+        <div class="promptNic" v-if="nicName">
+            <div class="tit_closed" @click="nicClose"></div>
+            <div class="nic_tips">登录成功！请定昵称，名字越皮，越有味道！</div>
+            <div class="nic_con">
+                <div class="nic_input">
+                    <input type="text" placeholder="欢迎来到游久网，给自己取一个独一无二的昵称吧！！" class="nic_input_text" id="nicText">
+                    <p>请输入8-12个中文或英文字符，不允许使用特殊符号</p>
+                </div>
+                <div class="nic_button">
+                    <button type="button" @click="setNic">确定</button>
+                </div>
+            </div>
+        </div>
         <header id="header">
             <img src="http://localhost:3020/image/header/top_brank.jpg" alt="">
             <div class="header">
@@ -161,40 +182,126 @@ export default {
             isErr:["",""],
             spCount:["",""],
             loginErr:false,
+            signSuc:false,
+            nicName:false,
             errCount:"",
+            sucCount:""
         }
     },
     methods:{
-        loginup(){
+        setNic(){
+            var nicReg=/^[\w\u4e00-\u9fa5]{3,12}$/;
+            if(nicReg.test(nicText.value)==false){
+                this.errCount="请输入正确的昵称";
+                this.loginErr=true;
+                setTimeout(()=>{this.loginErr=false},2000);
+                return;
+            }
+            this.axios.post("nicname",{
+                nicname:nicText.value
+            }).then(res=>{
+                var code=res.data.code;
+                var msg=res.data.res;
+                if(code==1){
+                    
+                }
+            }).catch(err=>{
+                console.log(err)
+            })
+        },
+        signIn(){
+            var phoneReg=/^1[0-9]{10}$/;
+            var upwdReg=/^(?=.*?[a-z)(?=.*>[A-Z])(?=.*?[0-9])[a-zA_Z0-9]{6,10}$/;
+            if(sign_upwd.value==""||sign_uname.value==""){
+                this.errCount="用户名或密码不能为空";
+                this.loginErr=true;
+                setTimeout(()=>{this.loginErr=false},2000);
+                return;
+            }else if(phoneReg.test(sign_uname.value)==false){
+                this.errCount="手机号码格式不正确";
+                this.loginErr=true;
+                setTimeout(()=>{this.loginErr=false},2000);
+                return;
+            }else if(upwdReg.test(sign_upwd.value)==false){
+                this.errCount="密码必须为字母数字组合";
+                this.loginErr=true;
+                setTimeout(()=>{this.loginErr=false},2000);
+                return;
+            }
+            this.axios.post("signup",{
+                phone:sign_uname.value,
+                upwd:sign_upwd.value
+            }).then(res=>{
+                var code=res.data.code;
+                var msg=res.data.msg;
+                if(code==1){
+                    this.sucCount=msg;
+                    this.signSuc=true;
+                    setTimeout(()=>{this.signSuc=false},2000);
+                }else if(code==-2){
+                    this.errCount=msg;
+                    this.loginErr=true;
+                    setTimeout(()=>{this.loginErr=false},2000);
+                }
+            }).catch(err=>{
+                console.log(err);
+            });
+        },
+        loginUp(){
             if(login_uname.value==""||login_upwd.value==""){
                 this.errCount="用户名或密码不能为空";
                 this.loginErr=true;
                 setTimeout(()=>{this.loginErr=false},2000);
+                return;
             }
             this.axios.post("loginup",{
-                uname:1111,
-                upwd:111
+                uname:login_uname.value,
+                upwd:login_upwd.value
             }).then(res=>{
-                console.log(res);
-            })
+                var code=res.data.code;
+                var msg=res.data.msg;
+                if(code==-1){
+                    this.errCount=msg;
+                    this.loginErr=true;
+                    setTimeout(()=>{this.loginErr=false},2000);
+                }else if(code==-2){
+                    this.errCount=msg;
+                    this.loginErr=true;
+                    setTimeout(()=>{this.loginErr=false},2000);
+                }else if(code==1){
+                    this.sucCount=msg;
+                    this.signSuc=true;
+                    setTimeout(()=>{this.signSuc=false},2000);
+                }else if(code==2){
+                    this.nicName=true;
+                }
+            }).catch(err=>{
+                console.log(err);
+            });
         },
         canSignin(n){
-            var unameReg=/^[a-zA-Z0-9_-]{4,16}$/;
+            var phoneReg=/^1[0-9]{10}$/;
+            // var unameReg=/^[a-zA-Z0-9_-]{4,16}$/;
             var upwdReg=/^\w{6,12}$/;
             if(n==1){
-                if(unameReg.test(sign_uname.value)==false){
+                if(sign_uname.value==""){
                     this.$set(this.isErr,0,true)
-                    this.$set(this.spCount,0,"用户名格式不正确")
+                    this.$set(this.spCount,0,"手机号码不能为空");
+                }else if(phoneReg.test(sign_uname.value)==false){
+                    this.$set(this.isErr,0,true)
+                    this.$set(this.spCount,0,"手机号码格式不正确")
                 }else{
                     this.$set(this.isErr,0,false);
                     this.$set(this.spCount,0,"");
                 }
             }else{
-                if(upwdReg.test(sign_upwd.value)==false){
+                if(sign_upwd.value==""){
                     this.$set(this.isErr,1,true);
-                    this.$set(this.spCount,1,"密码格式不正确");
+                    this.$set(this.spCount,1,"请输入密码");
+                }else if(upwdReg.test(sign_upwd.value)==false){
+                    this.$set(this.isErr,1,true);
+                    this.$set(this.spCount,1,"密码格式不规范");
                 }else{
-                    console.log(111)
                     this.$set(this.isErr,1,false);
                     this.$set(this.spCount,1,"");
                 }
@@ -204,9 +311,12 @@ export default {
             this.isShow=true;
             if(l==1){
                 this.isLogin=true;
-            }else{
+            }else if(l==-1){
                 this.isSign=true;
             }
+        },
+        nicClose(){
+            this.nicName=false;
         },
         login(n){
             this.isShow=false;
@@ -230,7 +340,7 @@ span.error{
     display: block;
     margin-top:5px;
 }
-/* 注册页面 */
+/* 登录页面 */
 div.login_box{
     width:590px;height:400px;
     padding:0 0 0 250px;
@@ -251,7 +361,7 @@ div.login_tit h2{
     color:#333333;
     line-height: 55px;
 }
-div.login_tit em{
+.tit_closed{
     float: right;
     width:14px;height:14px;
     background: url("http://localhost:3020/image/header/closed.png") 0 0 no-repeat;
@@ -383,22 +493,22 @@ p.view_clause>.move_login{
 .sign_btn{
     margin-top:0;
 }
-/* 注册 登录 失败 */
-div.login_prompt{
+/* 注册 登录 */
+div.login_prompt,div.sign_prompt{
     width:250px;height:120px;
     position: fixed;
     background:rgba(0,0,0,0.5);
-    z-index: 10001;
+    z-index: 10002;
     top:280px;
     left:50%;
     margin-left:-90px;
     border-radius:10px;
     padding:18px 0;
 }
-.prompt-enter-active,.prompt-leave-active{
+.promptFaile-enter-active,.promptFaile-leave-active,.promptSuc-enter-active,.promptSuc-leave-active{
     transition: opacity 2s;
 }
-.prompt-enter,.prompt-leave-to{
+.promptFaile-enter,.promptFaile-leave-to,.promptSuc-enter,.promptSuc-leave-to{
     opacity: 0;
 }
 div.login_prompt_faile{
@@ -406,11 +516,71 @@ div.login_prompt_faile{
     background:url("http://localhost:3020/image/header/u9-ts-tipsx.png") 0 0 no-repeat;
     margin:0 auto;
 }
+div.login_prompt_suc{
+    width:32px;height:32px;
+    background:url("http://localhost:3020/image/header/u9-ts-tips.png") 0 0 no-repeat;
+    margin:0 auto;
+}
 h4#prompt_text{
     font-size:18px;
     line-height: 36px;
     color:#fff;
     text-align: center;
+}
+/*设置昵称*/
+ div.promptNic{
+     width:480px;height:370px;
+     background:url("http://localhost:3020/image/header/u9_tsbg.jpg") 0 0 no-repeat;
+     position: fixed;
+     top:180px;
+     left:50%;
+     margin-left:-235px;
+     z-index:10001;
+     padding:142px 16px 0 30px;
+ }
+div.promptNic>.tit_closed{
+    position: absolute;
+    right:26px;
+    top:0;
+}
+div.promptNic>.nic_tips{
+    height:32px;
+    line-height:32px;
+    background:url("http://localhost:3020/image/header/u9-ts-tips.png") 0 0 no-repeat;
+    font-size:18px;
+    color:#333333;
+    padding-left:46px;
+}
+div.promptNic>.nic_con{
+    padding:20px 34px 0 20px;
+}
+div.promptNic>div.nic_con>div.nic_input>.nic_input_text{
+    width:370px;height:42px;
+    display: block;
+    background: #fff;
+    border:1px solid #dddddd;
+    text-indent:12px;
+    line-height: 42px;
+    color:#333333;
+    font-size:15px;
+    border-radius:5px;
+}
+div.promptNic>div.nic_con>div.nic_input>p{
+    color:#bcbcbc;
+    font-size:14px;
+    line-height: 32px;
+}
+div.nic_button>button{
+    width:368px;height:46px;
+    display: block;
+    background:#ff7700;
+    color:#fff;
+    line-height: 46px;
+    text-align: center;
+    font-size:18px;
+    border:none;
+    margin-top:15px;
+    border-radius:5px;
 }
 .login_mengban{
     width:100%;height:100%;

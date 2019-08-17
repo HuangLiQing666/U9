@@ -2,7 +2,7 @@
 const express=require('express');
 const cors=require("cors");
 const mysql=require("mysql");
-// const session=require("express-session");
+const session=require("express-session");
 var pool=mysql.createPool({
     host:'127.0.0.1',
     post:3306,
@@ -17,11 +17,11 @@ app.use(cors({
     origin:["http://localhost:8080","http://127.0.0.1:8080"],
     credentials:true,
 }));
-// app.use(session({
-//     secret:"128位字符串",
-//     resave:true,
-//     saveUninitialized:true
-// }));
+app.use(session({
+    secret:"128位字符串",
+    resave:true,
+    saveUninitialized:true
+}));
 app.listen(3020);
 app.use(express.static('public'));
 //不使用第三方qs模块 而是使用querystring模块
@@ -89,10 +89,87 @@ app.post("/loginup",(req,res)=>{
         var params=JSON.parse(data);
         var uname=params.uname;
         var upwd=params.upwd;
-        var sql="";
+        pool.query("SELECT uname From u9_user WHERE uname=?",[uname],(err,result)=>{
+            if(err) throw err;
+            if(result.length==0){
+                res.send({code:-1,msg:"账号不存在"})
+            }else{
+                pool.query("SELECT uid,uname,upwd,nick_name From u9_user WHERE uname=? AND upwd=?",[uname,upwd],(err,result)=>{
+                    if(err) throw err;
+                    if(result.length==0){
+                        res.send({code:-2,msg:"密码错误"});
+                    }else{
+                        req.session.uid=result[0].uid;
+                        if(result[0].nick_name=="''"){
+                            res.send({code:2,msg:"请设置昵称"})
+                        }else{
+                            console.log("欢迎回来")
+                            res.send({code:1,msg:"欢迎回来"})
+                        }
+                    }
+                });
+            }
+        });
     });
 });
 
+/*注册*/
+app.post("/signup",(req,res)=>{
+    var data="";
+    req.on("data",function(chunk){
+        data+=chunk;
+    });
+    req.on("end",function(){
+        var params=JSON.parse(data);
+        var phone=params.phone;
+        var upwd=params.upwd;
+        var sql="INSERT INTO u9_user VALUES (null,?,?)";
+        pool.query("SELECT uname From u9_user WHERE uname=?",[phone],(err,result)=>{
+            if(err) throw err;
+            if(result.length==0){
+                pool.query(sql,[phone,upwd],(err,result)=>{
+                    if(err) throw err;
+                    if(result.affectedRows==0){
+                        res.send({code:-1,msg:"注册失败"})
+                    }else{
+                        res.send({code:1,msg:"注册成功"});
+                    }
+                });
+            }else{
+                res.send({code:-2,msg:"账号已存在"})
+            }
+        });
+    });
+}); 
+
+/*添加昵称*/ 
+app.post("/nicname",(req,res)=>{
+    var data="";
+    var uid=req.session.uid;
+    req.on("data",function(chunk){
+        data+=chunk;
+    });
+    req.on("end",function(){
+        var params=JSON.parse(data);
+        var nicname=params.nicname; 
+        var sql="SELECT nick_name FROM u9_user WHERE nick_name=?";
+        pool.query(sql,[nicname],(err,result)=>{
+            if(err) throw err;
+            if(result.length==0){
+                pool.query("UPDATE u9_user SET nick_name=? WHERE uid=?",[nicname,uid],(err,result)=>{
+                    if(err) throw err;
+                    if(result.affectedRows==1){
+                        res.send({code:1,msg:"添加成功"});
+                    }else{
+                        res.send({code:-2,msg:"修改失败"})
+                    }
+                });
+            }else{
+                res.send({code:-1,msg:"昵称已存在,请修改"})
+            }
+        });
+    });
+});
 
 
 
