@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-loading="loading">
         <div class="login_mengban" :class="{canLogin:isShow}"></div>
         <div class="login_box" :class="{canLogin:isLogin}">
             <div class="login_tit">
@@ -128,14 +128,24 @@
                     <div class="header_news py-2 float-left">
                         <a href="">5月份市场数据：《堡垒之夜》《PUBG》热度不减</a>
                     </div>
-                    <div class="header_reg_login py-2 text-right float-right">
-                        <a href="javascript:;"  @click="login(1)">登录</a>
-                        <a href="javascript:;" @click="login(-1)">注册</a>
-                    </div>
                     <div class="header_other py-2 float-right">
                         <a href="">官方微博</a>
                         <a href="">设为首页</a>
                         <a href="">加入收藏</a>
+                    </div>
+                    <div v-if="nameShow" key="sucess" class="login_in">
+                        <div class="user_name">
+                            <a href="javascript:;">
+                                <img src="http://localhost:3020/image/header/middle.gif" alt="">
+                                <span>18782826336</span>
+                            </a>
+                            <ul></ul>
+                        </div>
+                        <em  class="user_out"><a href="javascript:;">退出</a></em>
+                    </div>
+                    <div class="header_reg_login py-2 text-right float-right" v-else key="faile">
+                        <a href="javascript:;"  @click="login(1)">登录</a>
+                        <a href="javascript:;" @click="login(-1)">注册</a>
                     </div>
                 </div>
                 <div class="header_top clear clearfix">
@@ -184,8 +194,11 @@ export default {
             loginErr:false,
             signSuc:false,
             nicName:false,
+            nameShow:false,
             errCount:"",
-            sucCount:""
+            sucCount:"",
+            userName:"",
+            loading:true
         }
     },
     methods:{
@@ -237,6 +250,9 @@ export default {
                 if(code==1){
                     this.sucCount=msg;
                     this.signSuc=true;
+                    this.nameShow=true;
+                    this.isShow=true;
+                    this.isSign=true;
                     setTimeout(()=>{this.signSuc=false},2000);
                 }else if(code==-2){
                     this.errCount=msg;
@@ -271,6 +287,9 @@ export default {
                 }else if(code==1){
                     this.sucCount=msg;
                     this.signSuc=true;
+                    this.nameShow=true;
+                    this.isShow=true;
+                    this.isLogin=true;
                     setTimeout(()=>{this.signSuc=false},2000);
                 }else if(code==2){
                     this.nicName=true;
@@ -581,6 +600,37 @@ div.nic_button>button{
     border:none;
     margin-top:15px;
     border-radius:5px;
+}
+/*登录、注册成功*/
+div.login_in{
+    width:170px;height:37px;
+    float: right;
+    position: relative;
+}
+div.login_in>div.user_name{
+    margin-top:5px;
+    width:100px;
+    float: left;
+}
+div.login_in>div.user_name>a>img{
+    width:26px;height:26px;
+    display: inline-block;
+    border-radius: 50%;
+    float:left;
+    margin-right:5px;
+}
+div.login_in>div.user_name>a>span{
+    font-size:14px;
+    line-height: 26px;
+    color:#333333;
+    display: block;
+    font-family: 宋体;
+    width:69px;height:26px;
+    overflow: hidden;
+}
+div.login_in>em.user_out{
+    float:right;
+    line-height: 37px;
 }
 .login_mengban{
     width:100%;height:100%;

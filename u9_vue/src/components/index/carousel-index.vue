@@ -47,22 +47,22 @@ export default {
     },
     methods:{
         mouse(n){
-            if(n==-1){
-                this.canCarousel=false;
-            }else{
-                this.canCarousel=true;
-                this.moveTo();
-            }
+            // if(n==-1){
+            //     this.canCarousel=false;
+            // }else{
+            //     this.canCarousel=true;
+            //     this.moveTo();
+            // }
         },
         change(l){
-            var to=l-1;
-            this.moveTo(to);
+            // var to=l-1;
+            // this.moveTo(to);
         },
         moveTo(to){
             var timer=setInterval(()=>{
-                if(!this.canCarousel){
-                    clearInterval(timer);
-                }
+                // if(!this.canCarousel){
+                //     clearInterval(timer);
+                // }
                 if(to==undefined){
                     this.i++;
                 }else{

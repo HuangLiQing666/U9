@@ -123,7 +123,7 @@ app.post("/signup",(req,res)=>{
         var params=JSON.parse(data);
         var phone=params.phone;
         var upwd=params.upwd;
-        var sql="INSERT INTO u9_user VALUES (null,?,?)";
+        var sql="INSERT INTO u9_user VALUES (null,?,?,'')";
         pool.query("SELECT uname From u9_user WHERE uname=?",[phone],(err,result)=>{
             if(err) throw err;
             if(result.length==0){
