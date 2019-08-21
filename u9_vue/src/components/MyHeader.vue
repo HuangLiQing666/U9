@@ -165,7 +165,7 @@
                 </div>
                 <div class="header_navtop">
                     <ul class="nav justify-content-around py-2">
-                        <li class="nav-item"><a href="" class="nav-link">新闻中心</a></li>
+                        <li class="nav-item"><a href="javascript:;" class="nav-link">新闻中心</a></li>
                         <li class="nav-item"><a href="" class="nav-link">电竞中心</a></li>
                         <li class="nav-item"><a href="" class="nav-link">电玩频道</a></li>
                         <li class="nav-item"><a href="" class="nav-link">手游</a></li>
@@ -198,7 +198,7 @@ export default {
             errCount:"",
             sucCount:"",
             userName:"",
-            loading:true
+            loading:false
         }
     },
     methods:{

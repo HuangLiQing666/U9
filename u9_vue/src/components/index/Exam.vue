@@ -16,10 +16,13 @@ export default {
     },
     methods:{
         change(){
+            this.$store.commit('setUid',5)
+            var uid=this.$store.getters.getUid;
+            console.log(uid)
             // this.str=1;
-             this.$set(this.num,0,"一")
-            this.num[0]="一";
-            console.log(this.num)
+            //  this.$set(this.num,0,"一")
+            // this.num[0]="一";
+            // console.log(this.num)
         }
     }
 }
