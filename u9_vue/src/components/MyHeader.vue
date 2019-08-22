@@ -137,7 +137,7 @@
                         <div class="user_name">
                             <a href="javascript:;">
                                 <img src="http://localhost:3020/image/header/middle.gif" alt="">
-                                <span>18782826336</span>
+                                <span>{{userName}}</span>
                             </a>
                             <ul></ul>
                         </div>
@@ -201,6 +201,9 @@ export default {
             loading:false
         }
     },
+    created(){
+        // this.loadMore();
+    },
     methods:{
         setNic(){
             var nicReg=/^[\w\u4e00-\u9fa5]{3,12}$/;
@@ -216,7 +219,13 @@ export default {
                 var code=res.data.code;
                 var msg=res.data.res;
                 if(code==1){
-                    
+                    this.sucCount=msg;
+                    this.signSuc=true;
+                    this.nameShow=true;
+                    this.isShow=true;
+                    this.isLogin=true;
+                    setTimeout(()=>{this.signSuc=false},2000);
+                    this.userName=res.data.nickame;
                 }
             }).catch(err=>{
                 console.log(err)
@@ -290,6 +299,9 @@ export default {
                     this.nameShow=true;
                     this.isShow=true;
                     this.isLogin=true;
+                    var uid=res.data.uid
+                    this.$store.commit('setUid',uid);
+                    this.userName=res.data.nickName;
                     setTimeout(()=>{this.signSuc=false},2000);
                 }else if(code==2){
                     this.nicName=true;
@@ -347,6 +359,11 @@ export default {
                 this.isLogin=true;;
             }
         },
+        // loadMore(){
+        //     var uid=this.$store.getters.getUid;
+        //     console.log(uid)
+        //     // this.axios.get()
+        // }
     }
 }
 </script>

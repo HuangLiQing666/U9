@@ -103,8 +103,7 @@ app.post("/loginup",(req,res)=>{
                         if(result[0].nick_name=="''"){
                             res.send({code:2,msg:"请设置昵称"})
                         }else{
-                            console.log("欢迎回来")
-                            res.send({code:1,msg:"欢迎回来"})
+                            res.send({code:1,msg:"欢迎回来",uid:result[0].uid,nickName:result[0].nick_name})
                         }
                     }
                 });
@@ -159,7 +158,7 @@ app.post("/nicname",(req,res)=>{
                 pool.query("UPDATE u9_user SET nick_name=? WHERE uid=?",[nicname,uid],(err,result)=>{
                     if(err) throw err;
                     if(result.affectedRows==1){
-                        res.send({code:1,msg:"添加成功"});
+                        res.send({code:1,msg:"添加成功",nickname});
                     }else{
                         res.send({code:-2,msg:"修改失败"})
                     }
