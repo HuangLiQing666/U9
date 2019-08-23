@@ -129,9 +129,9 @@
                         <a href="">5月份市场数据：《堡垒之夜》《PUBG》热度不减</a>
                     </div>
                     <div class="header_other py-2 float-right">
-                        <a href="">官方微博</a>
-                        <a href="">设为首页</a>
-                        <a href="">加入收藏</a>
+                        <a href="javascript:;">官方微博</a>
+                        <a href="javascript:;" @click="get">设为首页</a>
+                        <a href="javascript:;">加入收藏</a>
                     </div>
                     <div v-if="nameShow" key="sucess" class="login_in">
                         <div class="user_name">
@@ -186,25 +186,30 @@ import { setTimeout } from 'timers';
 export default {
     data(){
         return {
-            isShow:true,
-            isLogin:true,
-            isSign:true,
-            isErr:["",""],
-            spCount:["",""],
-            loginErr:false,
-            signSuc:false,
-            nicName:false,
-            nameShow:false,
-            errCount:"",
-            sucCount:"",
-            userName:"",
+            isShow:true,    //背景是否显示
+            isLogin:true,   //登录页面是否显示
+            isSign:true,    //注册页面是否显示
+            isErr:["",""],  //正则格式验证是否通过
+            spCount:["",""],//正则格式验证提示内容
+            loginErr:false, //登录注册失败
+            signSuc:false,  //登录 注册成功
+            nicName:false,  //设置昵称
+            nameShow:false, //登录成功后显示用户名
+            errCount:"",    //登录注册失败 提示内容
+            sucCount:"",    //登录注册成功 提示内容
+            userName:"",    //显示的用户名
             loading:false
         }
     },
     created(){
-        // this.loadMore();
+        this.loadMore();
     },
     methods:{
+        get(){
+            var uid=this.$store.getters.getUid;
+            console.log(uid)
+        },
+        // 添加昵称
         setNic(){
             var nicReg=/^[\w\u4e00-\u9fa5]{3,12}$/;
             if(nicReg.test(nicText.value)==false){
@@ -217,20 +222,24 @@ export default {
                 nicname:nicText.value
             }).then(res=>{
                 var code=res.data.code;
-                var msg=res.data.res;
+                var msg=res.data.msg;
+                var nicname=res.data.nicname;
                 if(code==1){
                     this.sucCount=msg;
                     this.signSuc=true;
-                    this.nameShow=true;
                     this.isShow=true;
                     this.isLogin=true;
+                    this.isSign=true;
+                    this.nicName=false;
+                    this.nameShow=true;
                     setTimeout(()=>{this.signSuc=false},2000);
-                    this.userName=res.data.nickame;
+                    this.userName=nicname;
                 }
             }).catch(err=>{
                 console.log(err)
             })
         },
+        // 注册
         signIn(){
             var phoneReg=/^1[0-9]{10}$/;
             var upwdReg=/^(?=.*?[a-z)(?=.*>[A-Z])(?=.*?[0-9])[a-zA_Z0-9]{6,10}$/;
@@ -259,9 +268,9 @@ export default {
                 if(code==1){
                     this.sucCount=msg;
                     this.signSuc=true;
-                    this.nameShow=true;
-                    this.isShow=true;
-                    this.isSign=true;
+                    this.nicName=true;
+                    var uid=res.data.uid
+                    this.$store.commit('setUid',uid);
                     setTimeout(()=>{this.signSuc=false},2000);
                 }else if(code==-2){
                     this.errCount=msg;
@@ -272,6 +281,7 @@ export default {
                 console.log(err);
             });
         },
+        // 登录
         loginUp(){
             if(login_uname.value==""||login_upwd.value==""){
                 this.errCount="用户名或密码不能为空";
@@ -310,6 +320,7 @@ export default {
                 console.log(err);
             });
         },
+        // 注册验证
         canSignin(n){
             var phoneReg=/^1[0-9]{10}$/;
             // var unameReg=/^[a-zA-Z0-9_-]{4,16}$/;
@@ -338,6 +349,7 @@ export default {
                 }
             }
         },
+        // 关闭的窗口
         loginClose(l){
             this.isShow=true;
             if(l==1){
@@ -346,9 +358,11 @@ export default {
                 this.isSign=true;
             }
         },
+        // 关闭昵称设置页面
         nicClose(){
             this.nicName=false;
         },
+        // 登录页面或注册页面的开关
         login(n){
             this.isShow=false;
             if(n==1){
@@ -359,11 +373,11 @@ export default {
                 this.isLogin=true;;
             }
         },
-        // loadMore(){
-        //     var uid=this.$store.getters.getUid;
-        //     console.log(uid)
-        //     // this.axios.get()
-        // }
+        loadMore(){
+            var uid=this.$store.getters.getUid;
+            console.log(uid)
+            // this.axios.get()
+        }
     }
 }
 </script>

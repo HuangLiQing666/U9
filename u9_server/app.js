@@ -100,7 +100,7 @@ app.post("/loginup",(req,res)=>{
                         res.send({code:-2,msg:"密码错误"});
                     }else{
                         req.session.uid=result[0].uid;
-                        if(result[0].nick_name=="''"){
+                        if(result[0].nick_name==''){
                             res.send({code:2,msg:"请设置昵称"})
                         }else{
                             res.send({code:1,msg:"欢迎回来",uid:result[0].uid,nickName:result[0].nick_name})
@@ -122,16 +122,21 @@ app.post("/signup",(req,res)=>{
         var params=JSON.parse(data);
         var phone=params.phone;
         var upwd=params.upwd;
-        var sql="INSERT INTO u9_user VALUES (null,?,?,'')";
         pool.query("SELECT uname From u9_user WHERE uname=?",[phone],(err,result)=>{
             if(err) throw err;
             if(result.length==0){
-                pool.query(sql,[phone,upwd],(err,result)=>{
+                pool.query("INSERT INTO u9_user VALUES (null,?,?,'')",[phone,upwd],(err,result)=>{
                     if(err) throw err;
                     if(result.affectedRows==0){
                         res.send({code:-1,msg:"注册失败"})
                     }else{
-                        res.send({code:1,msg:"注册成功"});
+                        pool.query("SELECT uid FROM u9_user WHERE uname=?",[phone],(err,result)=>{
+                            if(err) throw err;
+                            var uid=result[0].uid
+                            req.session.uid=uid;
+                            console.log(req.session.uid)
+                            res.send({code:1,msg:"注册成功",uid:uid});
+                        });
                     }
                 });
             }else{
@@ -150,7 +155,7 @@ app.post("/nicname",(req,res)=>{
     });
     req.on("end",function(){
         var params=JSON.parse(data);
-        var nicname=params.nicname; 
+        var nicname=params.nicname;
         var sql="SELECT nick_name FROM u9_user WHERE nick_name=?";
         pool.query(sql,[nicname],(err,result)=>{
             if(err) throw err;
@@ -158,7 +163,7 @@ app.post("/nicname",(req,res)=>{
                 pool.query("UPDATE u9_user SET nick_name=? WHERE uid=?",[nicname,uid],(err,result)=>{
                     if(err) throw err;
                     if(result.affectedRows==1){
-                        res.send({code:1,msg:"添加成功",nickname});
+                        res.send({code:1,msg:"设置成功",nicname:nicname});
                     }else{
                         res.send({code:-2,msg:"修改失败"})
                     }
