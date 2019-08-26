@@ -131,7 +131,6 @@ USE u9;
 CREATE TABLE u9_user(
   uid INT PRIMARY KEY AUTO_INCREMENT,
   uname VARCHAR(32),
-  upwd VARCHAR(32)
+  upwd VARCHAR(32),
+  nick_name VARCHAR(64)
 );
-
-ALTER TABLE u9_user ADD COLUMN nick_name VARCHAR(64) NOT null;

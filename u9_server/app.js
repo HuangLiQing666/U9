@@ -190,6 +190,12 @@ app.get("/getUid",(req,res)=>{
     }
 });
 
+// 清除登录状态
+app.get("/cleanUser",(req,res)=>{
+    req.session.uid=null;
+    res.send({code:1,msg:"已清除"})
+})
+
 
 
 
