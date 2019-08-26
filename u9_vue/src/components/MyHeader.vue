@@ -130,7 +130,7 @@
                     </div>
                     <div class="header_other py-2 float-right">
                         <a href="javascript:;">官方微博</a>
-                        <a href="javascript:;" @click="get">设为首页</a>
+                        <a href="javascript:;">设为首页</a>
                         <a href="javascript:;">加入收藏</a>
                     </div>
                     <div v-if="nameShow" key="sucess" class="login_in">
@@ -141,7 +141,7 @@
                             </a>
                             <ul></ul>
                         </div>
-                        <em  class="user_out"><a href="javascript:;">退出</a></em>
+                        <em  class="user_out"><a href="javascript:;" @click="logOut">退出</a></em>
                     </div>
                     <div class="header_reg_login py-2 text-right float-right" v-else key="faile">
                         <a href="javascript:;"  @click="login(1)">登录</a>
@@ -205,7 +205,8 @@ export default {
         this.loadMore();
     },
     methods:{
-        get(){
+        // 退出登录状态
+        logOut(){
             var uid=this.$store.getters.getUid;
             console.log(uid)
         },
@@ -374,9 +375,18 @@ export default {
             }
         },
         loadMore(){
-            var uid=this.$store.getters.getUid;
-            console.log(uid)
-            // this.axios.get()
+            this.axios.get("getUid").then(res=>{
+                var code=res.data.code;
+                var nickName=res.data.nickName;
+                var uid=res.data.uid;
+                if(code==1){
+                    this.nameShow=true;
+                    this.userName=nickName;
+                    this.$store.commit('setUid',uid);
+                }
+            }).catch(err=>{
+                console.log(err);
+            });
         }
     }
 }

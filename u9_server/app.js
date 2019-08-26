@@ -68,7 +68,7 @@ app.get("/todaynews",(req,res)=>{
 
 /* 官方新闻 */ 
 app.get("/synews",(req,res)=>{
-    var sql="SELECT ofcnewsid,ofc_news,ofc_pic FROM u9_index_synews";
+    var sql="SELECT ofcid,ofc_news,ofc_pic FROM u9_index_synews";
     pool.query(sql,(err,result)=>{
         if(err) throw err;
         if(result.length==0){
@@ -134,7 +134,6 @@ app.post("/signup",(req,res)=>{
                             if(err) throw err;
                             var uid=result[0].uid
                             req.session.uid=uid;
-                            console.log(req.session.uid)
                             res.send({code:1,msg:"注册成功",uid:uid});
                         });
                     }
@@ -174,7 +173,22 @@ app.post("/nicname",(req,res)=>{
         });
     });
 });
-
+// 获取当前登录状态
+app.get("/getUid",(req,res)=>{
+    var uid=req.session.uid;
+    console.log(uid)
+    if(uid==undefined){
+        res.send({code:-1,msg:"未登录"})
+    }else{
+        pool.query("SELECT nick_name FROM u9_user WHERE uid=?",[uid],(err,result)=>{
+            if(result.length==0){
+                res.send({code:-2,msg:"请设置一个昵称"})
+            }else{
+                res.send({code:1,msg:"已登录",uid:uid,nickName:result[0].nick_name});
+            }
+        })
+    }
+});
 
 
 
