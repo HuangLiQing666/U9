@@ -312,6 +312,30 @@
                         <officialnews/>
                     </div>
                 </div>
+                <div class="video mt-25">
+                    <div class="video_tit">
+                        <h2>游戏视频</h2>
+                    </div>
+                    <div class="clear mt-20 con">
+                        <div class="vedio_box">
+                            <div class="vedio_img">
+                                <a href="javascript:;"><img src="http://localhost:3020/image/index/vedio_1.jpg" alt=""></a>
+                            </div>
+                            <ul class="vedio_news">
+                                <li><a href="javascript:;">【3A漫游指南】赤痕：夜之仪式 |IGA</a></li>
+                                <li><a href="javascript:;">松野泰己传（四）丨最终幻想12，PS2</a></li>
+                            </ul>
+                            <dl class="vedio_zz clear">
+                                <dt><img src="http://localhost:3020/image/index/vedio_zz.jpg" alt=""></dt>
+                                <dd class="zz_text">
+                                    <h4>3A漫游指南</h4>
+                                    <p>游戏文化爱好者定制</p>
+                                </dd>
+                                <dd class="zz_more"><a href="javascript:;"></a></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
             </div>
         </article>
         <my-footer></my-footer>
@@ -827,5 +851,104 @@ a:hover .scale_img{transform: scale(1.1);}
     line-height: 24px;
     background:url("http://localhost:3020/image/index/li.png") 0 center no-repeat;
     padding-left: 15px;
+}
+/*游戏视频*/
+/* 标题栏 */
+div.video>div.video_tit{
+    height:30px;
+    overflow: hidden;
+}
+div.video>div.video_tit h2{
+    float: left;
+    width:132px;height:30px;
+    line-height: 30px;
+    font-size:28px;
+    position: relative;
+}
+div.video>div.video_tit h2:before{
+    content:"";
+    width:954px;height:1px;
+    background: #e6e6e6;
+    position: absolute;
+    left:246px;top:14.5px;
+}
+div.video>div.video_tit h2:after{
+    content: "";
+    width:113px;height:3px;
+    background: #333333;
+    border-right:1px solid #fff;
+    position: absolute;
+    left:132px;top:13.5px;
+}
+/* 视频展示区 */
+div.vedio_box{
+    width:288px;
+    float: left;
+    margin-left:16px;
+    background:#fff;
+    box-shadow: 2px 5px 2px #f3f2f2;
+    transition: all .3s;
+}
+div.vedio_box>div.vedio_img{
+    width:288px;height:151px;
+    display:block;
+    overflow: hidden;
+}   
+div.vedio_box>div.vedio_img img{
+    width:288px;height:151px;
+    display:block;
+}
+div.vedio_box>ul.vedio_news{
+    height:65px;
+    border-bottom:1px solid #f0f0f0;
+    padding:12px 17px;
+}
+div.vedio_box>ul.vedio_news li{
+    line-height: 20px;
+    background: url("http://localhost:3020/image/index/dian.png") 0 center no-repeat;
+    padding-left:13px;
+    height:20px;
+    overflow: hidden;
+}
+div.vedio_box>ul.vedio_news li a{
+    color:#666;
+}
+div.vedio_box>dl.vedio_zz{
+    height:78px;
+    padding:14px 16px;
+    overflow: hidden;
+}
+div.vedio_box>dl.vedio_zz dt{
+    float: left;
+    width:50px;
+    margin-right:12px;
+}
+div.vedio_box>dl.vedio_zz dt img{
+    width:50px;height:50px;
+    display: block;
+    border-radius: 50%;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_text{
+    width:155px;
+    float: left;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_text h4{
+    font-size:16px;
+    line-height: 24px;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_text p{
+    line-height:24px;
+    color:#bbbbbb;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_more{
+    width:18px;
+    float: right;
+    margin-top:23px;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_more a{
+    width:18px;height:4px;
+    background: url("http://localhost:3020/image/index/vmore.png") 0 0 no-repeat;
+    display: block;
+    overflow: hidden;
 }
 </style>
