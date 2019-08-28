@@ -134,3 +134,21 @@ CREATE TABLE u9_user(
   upwd VARCHAR(32),
   nick_name VARCHAR(64)
 );
+
+/*游戏视频*/
+USE u9;
+CREATE TABLE u9_index_video(
+  vid INT PRIMARY KEY AUTO_INCREMENT,
+  vdo_tit VARCHAR(255),
+  vdo_cnt VARCHAR(255),
+  vdo_pic VARCHAR(255),
+  vdo_pro VARCHAR(255),
+  vdo_zz  VARCHAR(32),
+  vdo_txt VARCHAR(64)
+);
+
+INSERT INTO u9_index_video VALUES
+(NULL,'【3A漫游指南】赤痕：夜之仪式 |IGA与他的恶魔城狂想曲','松野泰己传（四）丨最终幻想12，PS2','vedio_1.jpg','vedio_zz1.jpg','3A漫游指南','游戏文化爱好者定制'),
+(NULL,'【非理性跳坑】跳《控制》坑前所有你必须知道的事！','【非理性跳坑】跳《鬼哭邦》坑前所有','vedio_2.jpg','vedio_zz1.jpg','非理性跳坑','游戏跳坑之前必看的事'),
+(NULL,'左右游评丨《赤痕：夜之仪式》评测：','左右游评丨《尸灵》评测：用游戏的方','vedio_3.jpg','vedio_zz2.jpg','左右游评','优质游戏评测节目生产线'),
+(NULL,'十分钟教你玩懂爆肝独立游戏《雨中冒','新手八番钟：赤潮自走棋新手攻略 十','vedio_4.jpg','vedio_zz3.jpg','新手八番钟','祖传攻略三十年');

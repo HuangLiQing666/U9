@@ -176,7 +176,6 @@ app.post("/nicname",(req,res)=>{
 // 获取当前登录状态
 app.get("/getUid",(req,res)=>{
     var uid=req.session.uid;
-    console.log(uid)
     if(uid==undefined){
         res.send({code:-1,msg:"未登录"})
     }else{
@@ -197,8 +196,17 @@ app.get("/cleanUser",(req,res)=>{
 })
 
 
-
-
+/*游戏视频*/ 
+app.get("/gamevideo",(req,res)=>{
+    pool.query("SELECT vdo_tit,vdo_cnt,vdo_pic,vdo_pro,vdo_zz,vdo_txt FROM u9_index_video",(err,result)=>{
+        if(err) throw err;
+        if(result.length==0){
+            res.send({code:-1,msg:"查找成功"});
+        }else{
+            res.send(result);
+        }
+    })
+})
 
 
 

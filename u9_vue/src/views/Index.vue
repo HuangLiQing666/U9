@@ -126,7 +126,7 @@
                         </div>
                         <div class="newslist clear">
                             <div :class="{show:shows[0]}">
-                                <div class="news_box" v-for="(item,i) of todatNews" :key="i">
+                                <div class="news_box" v-for="(item,i) of todayNews" :key="i">
                                     <h4>
                                         <p class="settop">置顶</p>
                                         <a href="" v-text="item.news_tit"></a>
@@ -317,19 +317,19 @@
                         <h2>游戏视频</h2>
                     </div>
                     <div class="clear mt-20 con">
-                        <div class="vedio_box">
+                        <div class="vedio_box" v-for="(item,i) of video" :key="i">
                             <div class="vedio_img">
-                                <a href="javascript:;"><img src="http://localhost:3020/image/index/vedio_1.jpg" alt=""></a>
+                                <a href="javascript:;"><img class="scale_img" :src="'http://localhost:3020/image/index/'+item.vdo_pic" alt=""></a>
                             </div>
                             <ul class="vedio_news">
-                                <li><a href="javascript:;">【3A漫游指南】赤痕：夜之仪式 |IGA</a></li>
-                                <li><a href="javascript:;">松野泰己传（四）丨最终幻想12，PS2</a></li>
+                                <li><a href="javascript:;" v-text="item.vdo_tit"></a></li>
+                                <li><a href="javascript:;" v-text="item.vdo_cnt"></a></li>
                             </ul>
                             <dl class="vedio_zz clear">
-                                <dt><img src="http://localhost:3020/image/index/vedio_zz.jpg" alt=""></dt>
+                                <dt><img class="scale_img" :src="'http://localhost:3020/image/index/'+item.vdo_pro" alt=""></dt>
                                 <dd class="zz_text">
-                                    <h4>3A漫游指南</h4>
-                                    <p>游戏文化爱好者定制</p>
+                                    <h4 v-text="item.vdo_zz"></h4>
+                                    <p v-text="item.vdo_txt"></p>
                                 </dd>
                                 <dd class="zz_more"><a href="javascript:;"></a></dd>
                             </dl>
@@ -348,8 +348,9 @@ import officialNews from "../components/index/officialNews.vue"
 export default {
     data(){
         return {
-            todatNews:[{default:""}],
-            shows:[true,false,false,false],
+            todayNews:[{default:""}],  //今日新闻
+            video:[{default:""}], //游戏视频
+            shows:[true,false,false,false], //新闻导航栏开关
             n:0,
             isOpen:[0,1,2,3],
             isFix:false,
@@ -392,7 +393,15 @@ export default {
         },
         loadMore(){
             this.axios.get("todaynews").then(res=>{
-                this.todatNews=res.data;
+                this.todayNews=res.data;
+            }).catch(err=>{
+                console.log(err)
+            });
+            this.axios.get("gamevideo").then(res=>{
+                this.video=res.data;
+                console.log(this.video)
+            }).catch(err=>{
+                console.log(err)
             });
         }
     },
@@ -865,14 +874,14 @@ div.video>div.video_tit h2{
     font-size:28px;
     position: relative;
 }
-div.video>div.video_tit h2:before{
+div.video>div.video_tit h2:before,div.newgame>div.newgame_tit h2:before{
     content:"";
     width:954px;height:1px;
     background: #e6e6e6;
     position: absolute;
     left:246px;top:14.5px;
 }
-div.video>div.video_tit h2:after{
+div.video>div.video_tit h2:after,div.newgame>div.newgame_tit h2:after{
     content: "";
     width:113px;height:3px;
     background: #333333;
@@ -881,10 +890,13 @@ div.video>div.video_tit h2:after{
     left:132px;top:13.5px;
 }
 /* 视频展示区 */
+div.video>div.con{
+    width:1216px;
+}
 div.vedio_box{
     width:288px;
     float: left;
-    margin-left:16px;
+    margin-right:16px;
     background:#fff;
     box-shadow: 2px 5px 2px #f3f2f2;
     transition: all .3s;
