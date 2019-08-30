@@ -126,7 +126,7 @@
                         </div>
                         <div class="newslist clear">
                             <div :class="{show:shows[0]}">
-                                <div class="news_box" v-for="(item,i) of todatNews" :key="i">
+                                <div class="news_box" v-for="(item,i) of todayNews" :key="i">
                                     <h4>
                                         <p class="settop">置顶</p>
                                         <a href="" v-text="item.news_tit"></a>
@@ -312,6 +312,30 @@
                         <officialnews/>
                     </div>
                 </div>
+                <div class="video mt-25">
+                    <div class="video_tit">
+                        <h2>游戏视频</h2>
+                    </div>
+                    <div class="clear mt-20 con">
+                        <div class="vedio_box" v-for="(item,i) of video" :key="i">
+                            <div class="vedio_img">
+                                <a href="javascript:;"><img class="scale_img" :src="'http://localhost:3020/image/index/'+item.vdo_pic" alt=""></a>
+                            </div>
+                            <ul class="vedio_news">
+                                <li><a href="javascript:;" v-text="item.vdo_tit"></a></li>
+                                <li><a href="javascript:;" v-text="item.vdo_cnt"></a></li>
+                            </ul>
+                            <dl class="vedio_zz clear">
+                                <dt><img class="scale_img" :src="'http://localhost:3020/image/index/'+item.vdo_pro" alt=""></dt>
+                                <dd class="zz_text">
+                                    <h4 v-text="item.vdo_zz"></h4>
+                                    <p v-text="item.vdo_txt"></p>
+                                </dd>
+                                <dd class="zz_more"><a href="javascript:;"></a></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
             </div>
         </article>
         <my-footer></my-footer>
@@ -324,8 +348,9 @@ import officialNews from "../components/index/officialNews.vue"
 export default {
     data(){
         return {
-            todatNews:[{default:""}],
-            shows:[true,false,false,false],
+            todayNews:[{default:""}],  //今日新闻
+            video:[{default:""}], //游戏视频
+            shows:[true,false,false,false], //新闻导航栏开关
             n:0,
             isOpen:[0,1,2,3],
             isFix:false,
@@ -368,7 +393,15 @@ export default {
         },
         loadMore(){
             this.axios.get("todaynews").then(res=>{
-                this.todatNews=res.data;
+                this.todayNews=res.data;
+            }).catch(err=>{
+                console.log(err)
+            });
+            this.axios.get("gamevideo").then(res=>{
+                this.video=res.data;
+                console.log(this.video)
+            }).catch(err=>{
+                console.log(err)
             });
         }
     },
@@ -827,5 +860,107 @@ a:hover .scale_img{transform: scale(1.1);}
     line-height: 24px;
     background:url("http://localhost:3020/image/index/li.png") 0 center no-repeat;
     padding-left: 15px;
+}
+/*游戏视频*/
+/* 标题栏 */
+div.video>div.video_tit{
+    height:30px;
+    overflow: hidden;
+}
+div.video>div.video_tit h2{
+    float: left;
+    width:132px;height:30px;
+    line-height: 30px;
+    font-size:28px;
+    position: relative;
+}
+div.video>div.video_tit h2:before,div.newgame>div.newgame_tit h2:before{
+    content:"";
+    width:954px;height:1px;
+    background: #e6e6e6;
+    position: absolute;
+    left:246px;top:14.5px;
+}
+div.video>div.video_tit h2:after,div.newgame>div.newgame_tit h2:after{
+    content: "";
+    width:113px;height:3px;
+    background: #333333;
+    border-right:1px solid #fff;
+    position: absolute;
+    left:132px;top:13.5px;
+}
+/* 视频展示区 */
+div.video>div.con{
+    width:1216px;
+}
+div.vedio_box{
+    width:288px;
+    float: left;
+    margin-right:16px;
+    background:#fff;
+    box-shadow: 2px 5px 2px #f3f2f2;
+    transition: all .3s;
+}
+div.vedio_box>div.vedio_img{
+    width:288px;height:151px;
+    display:block;
+    overflow: hidden;
+}   
+div.vedio_box>div.vedio_img img{
+    width:288px;height:151px;
+    display:block;
+}
+div.vedio_box>ul.vedio_news{
+    height:65px;
+    border-bottom:1px solid #f0f0f0;
+    padding:12px 17px;
+}
+div.vedio_box>ul.vedio_news li{
+    line-height: 20px;
+    background: url("http://localhost:3020/image/index/dian.png") 0 center no-repeat;
+    padding-left:13px;
+    height:20px;
+    overflow: hidden;
+}
+div.vedio_box>ul.vedio_news li a{
+    color:#666;
+}
+div.vedio_box>dl.vedio_zz{
+    height:78px;
+    padding:14px 16px;
+    overflow: hidden;
+}
+div.vedio_box>dl.vedio_zz dt{
+    float: left;
+    width:50px;
+    margin-right:12px;
+}
+div.vedio_box>dl.vedio_zz dt img{
+    width:50px;height:50px;
+    display: block;
+    border-radius: 50%;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_text{
+    width:155px;
+    float: left;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_text h4{
+    font-size:16px;
+    line-height: 24px;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_text p{
+    line-height:24px;
+    color:#bbbbbb;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_more{
+    width:18px;
+    float: right;
+    margin-top:23px;
+}
+div.vedio_box>dl.vedio_zz>dd.zz_more a{
+    width:18px;height:4px;
+    background: url("http://localhost:3020/image/index/vmore.png") 0 0 no-repeat;
+    display: block;
+    overflow: hidden;
 }
 </style>

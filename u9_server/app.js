@@ -68,7 +68,7 @@ app.get("/todaynews",(req,res)=>{
 
 /* 官方新闻 */ 
 app.get("/synews",(req,res)=>{
-    var sql="SELECT ofcnewsid,ofc_news,ofc_pic FROM u9_index_synews";
+    var sql="SELECT ofcid,ofc_news,ofc_pic FROM u9_index_synews";
     pool.query(sql,(err,result)=>{
         if(err) throw err;
         if(result.length==0){
@@ -134,7 +134,6 @@ app.post("/signup",(req,res)=>{
                             if(err) throw err;
                             var uid=result[0].uid
                             req.session.uid=uid;
-                            console.log(req.session.uid)
                             res.send({code:1,msg:"注册成功",uid:uid});
                         });
                     }
@@ -174,11 +173,52 @@ app.post("/nicname",(req,res)=>{
         });
     });
 });
+// 获取当前登录状态
+app.get("/getUid",(req,res)=>{
+    var uid=req.session.uid;
+    if(uid==undefined){
+        res.send({code:-1,msg:"未登录"})
+    }else{
+        pool.query("SELECT nick_name FROM u9_user WHERE uid=?",[uid],(err,result)=>{
+            if(result.length==0){
+                res.send({code:-2,msg:"请设置一个昵称"})
+            }else{
+                res.send({code:1,msg:"已登录",uid:uid,nickName:result[0].nick_name});
+            }
+        })
+    }
+});
+
+// 清除登录状态
+app.get("/cleanUser",(req,res)=>{
+    req.session.uid=null;
+    res.send({code:1,msg:"已清除"})
+})
 
 
+/*游戏视频*/ 
+app.get("/gamevideo",(req,res)=>{
+    pool.query("SELECT vdo_tit,vdo_cnt,vdo_pic,vdo_pro,vdo_zz,vdo_txt FROM u9_index_video",(err,result)=>{
+        if(err) throw err;
+        if(result.length==0){
+            res.send({code:-1,msg:"查找成功"});
+        }else{
+            res.send(result);
+        }
+    })
+})
 
-
-
+/*新游推荐*/
+app.get("/newgame",(req,res)=>{
+    pool.query("SELECT ng_pic,ng_tit,ng_pla,ng_vir,ng_drwo,ng_scr FROM u9_index_newgame",(err,result)=>{
+        if(err) throw err;
+        if(result.length==0){
+            res.send({code:-1,msg:"查找失败"})
+        }else{
+            res.send(result)
+        }
+    })
+}) 
 
 
 

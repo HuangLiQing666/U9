@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div>
         <div class="login_mengban" :class="{canLogin:isShow}"></div>
         <div class="login_box" :class="{canLogin:isLogin}">
             <div class="login_tit">
@@ -130,18 +130,23 @@
                     </div>
                     <div class="header_other py-2 float-right">
                         <a href="javascript:;">官方微博</a>
-                        <a href="javascript:;" @click="get">设为首页</a>
+                        <a href="javascript:;">设为首页</a>
                         <a href="javascript:;">加入收藏</a>
                     </div>
                     <div v-if="nameShow" key="sucess" class="login_in">
-                        <div class="user_name">
+                        <div class="user_name" @mouseover="ulShow(1)" @mouseout="ulShow(-1)">
                             <a href="javascript:;">
                                 <img src="http://localhost:3020/image/header/middle.gif" alt="">
                                 <span>{{userName}}</span>
                             </a>
-                            <ul></ul>
+                            <ul class="user_drop" :style="{display:isBlock?'block':'none'}">
+                                <li><a href="javascript:;">账号设置</a></li>
+                                <li><a href="javascript:;">修改密码</a></li>
+                                <li><a href="javascript:;">我的足迹</a></li>
+                                <li><a href="javascript:;">我的评论</a></li>
+                            </ul>
                         </div>
-                        <em  class="user_out"><a href="javascript:;">退出</a></em>
+                        <em  class="user_out"><a href="javascript:;" @click="logOut">退出</a></em>
                     </div>
                     <div class="header_reg_login py-2 text-right float-right" v-else key="faile">
                         <a href="javascript:;"  @click="login(1)">登录</a>
@@ -198,16 +203,29 @@ export default {
             errCount:"",    //登录注册失败 提示内容
             sucCount:"",    //登录注册成功 提示内容
             userName:"",    //显示的用户名
-            loading:false
+            isBlock:false   //用户菜单栏是否显示
         }
     },
     created(){
         this.loadMore();
     },
     methods:{
-        get(){
-            var uid=this.$store.getters.getUid;
-            console.log(uid)
+        //用户菜单栏是否显示
+        ulShow(n){
+            if(n==1){
+                this.isBlock=true;
+            }else{
+                this.isBlock=false;
+            }
+        },
+        // 退出登录状态
+        logOut(){
+            this.axios.get("cleanUser").then(res=>{
+                console.log(res.data.msg)
+            }).catch(err=>{
+                console.log(err)
+            });
+            this.loadMore();
         },
         // 添加昵称
         setNic(){
@@ -243,6 +261,8 @@ export default {
         signIn(){
             var phoneReg=/^1[0-9]{10}$/;
             var upwdReg=/^(?=.*?[a-z)(?=.*>[A-Z])(?=.*?[0-9])[a-zA_Z0-9]{6,10}$/;
+            var phone=sign_uname.value;
+            var upwd=sign_upwd.value;
             if(sign_upwd.value==""||sign_uname.value==""){
                 this.errCount="用户名或密码不能为空";
                 this.loginErr=true;
@@ -260,8 +280,8 @@ export default {
                 return;
             }
             this.axios.post("signup",{
-                phone:sign_uname.value,
-                upwd:sign_upwd.value
+                phone,
+                upwd
             }).then(res=>{
                 var code=res.data.code;
                 var msg=res.data.msg;
@@ -269,6 +289,8 @@ export default {
                     this.sucCount=msg;
                     this.signSuc=true;
                     this.nicName=true;
+                    this.nameShow=true;
+                    this.userName=phone;
                     var uid=res.data.uid
                     this.$store.commit('setUid',uid);
                     setTimeout(()=>{this.signSuc=false},2000);
@@ -283,6 +305,8 @@ export default {
         },
         // 登录
         loginUp(){
+            var uname=login_uname.value;
+            var upwd=login_upwd.value;
             if(login_uname.value==""||login_upwd.value==""){
                 this.errCount="用户名或密码不能为空";
                 this.loginErr=true;
@@ -290,8 +314,8 @@ export default {
                 return;
             }
             this.axios.post("loginup",{
-                uname:login_uname.value,
-                upwd:login_upwd.value
+                uname,
+                upwd
             }).then(res=>{
                 var code=res.data.code;
                 var msg=res.data.msg;
@@ -315,6 +339,8 @@ export default {
                     setTimeout(()=>{this.signSuc=false},2000);
                 }else if(code==2){
                     this.nicName=true;
+                    this.nameShow=true;
+                    this.userName=uname;
                 }
             }).catch(err=>{
                 console.log(err);
@@ -374,9 +400,22 @@ export default {
             }
         },
         loadMore(){
-            var uid=this.$store.getters.getUid;
-            console.log(uid)
-            // this.axios.get()
+            this.axios.get("getUid").then(res=>{
+                var code=res.data.code;
+                var nickName=res.data.nickName;
+                var uid=res.data.uid;
+                if(code==1){
+                    this.nameShow=true;
+                    this.userName=nickName;
+                    this.$store.commit('setUid',uid);
+                }else if(code==-1){
+                    this.nameShow=false;
+                }else if(code==-2){
+                    this.nicName=true;
+                }
+            }).catch(err=>{
+                console.log(err);
+            });
         }
     }
 }
@@ -633,6 +672,25 @@ div.nic_button>button{
     border-radius:5px;
 }
 /*登录、注册成功*/
+ul.user_drop{
+    position: absolute;
+    left:0;top:33px;
+    width:103px;
+    padding:15px 0;
+    background-color: #fff;
+    border:1px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    background-clip: padding-box; /*背景被裁剪到内边距框。*/
+    z-index: 9999;
+}
+ul.user_drop li{
+    font-size:14px;
+    line-height: 30px;
+    text-align: center;
+    font-family: 宋体;
+    display: block;
+}
 div.login_in{
     width:170px;height:37px;
     float: right;
