@@ -337,20 +337,34 @@
                     </div>
                 </div>
             </div>
+            <newgame/>
         </article>
         <my-footer></my-footer>
+        <ul class="ce_menu">
+            <li><a href="javascript:;">新闻</a></li>
+            <li><a href="javascript:;">视频</a></li>
+            <li><a href="javascript:;">新游</a></li>
+            <li><a href="javascript:;">网游</a></li>
+            <div class="wx_code" @mouseover="scan(1)" @mouseout="scan(-1)">
+                <a href="javascript:;"></a>
+                <div class="wx_box" :style="{display:canScan?'block':'none'}"><img src="http://localhost:3020/image/index/wx_code_large.jpg"></div>
+            </div>
+            <div class="gotop"><a href="javascript:;">TOP</a></div>
+        </ul>
     </div>
 </template>
 <script>
 import CarouselIndex from "../components/index/carousel-index.vue"
 import esNews from "../components/index/esNews.vue"
 import officialNews from "../components/index/officialNews.vue"
+import newGame from "../components/index/newGame.vue"
 export default {
     data(){
         return {
             todayNews:[{default:""}],  //今日新闻
             video:[{default:""}], //游戏视频
             shows:[true,false,false,false], //新闻导航栏开关
+            canScan:false,  //二维码扫描
             n:0,
             isOpen:[0,1,2,3],
             isFix:false,
@@ -374,6 +388,13 @@ export default {
         }, true);
     },
     methods:{
+        scan(n){
+            if(n==1){
+                this.canScan=true;
+            }else{
+                this.canScan=false;
+            }
+        },
         offsetT(){
             this.offsetTop=this.$refs.newstab.offsetTop;
             console.log(this.offsetTop)
@@ -408,16 +429,12 @@ export default {
     components:{
         "carousel-index":CarouselIndex,
         "esnews":esNews,
-        "officialnews":officialNews
+        "officialnews":officialNews,
+        "newgame":newGame
     }
 }
 </script>
 <style scoped>
-.w-1200{
-    width:1200px;
-    margin:0 auto;
-}
-.w400{width:400px;}
 .navbox,.subnav{width:1240px;margin:0 auto;}
 .navbox{
     height:168px;
@@ -962,5 +979,50 @@ div.vedio_box>dl.vedio_zz>dd.zz_more a{
     background: url("http://localhost:3020/image/index/vmore.png") 0 0 no-repeat;
     display: block;
     overflow: hidden;
+}
+ul.ce_menu{
+    position: fixed;
+    z-index: 9999;
+    width:60px;
+    top:410px;left:50%;
+    margin-left:-700px;
+
+}
+ul.ce_menu a{
+    width:58px;height:38px;
+    background: #fafbfc;
+    border:1px solid #f2f2f2;
+    border-bottom: none;
+    line-height: 38px;
+    text-align: center;
+    font-size:14px;
+    color:#444444;
+    display: block;
+}
+ul.ce_menu li a:hover{
+    background: #f07800;
+    border:1px solid #f07800;
+    border-bottom: none;
+    color:#fff;
+}
+ul.ce_menu>div.wx_code{
+    width:58px;height:58px;
+    position: relative;
+
+}
+ul.ce_menu>div.wx_code a{
+    height:58px;
+    background: url("http://localhost:3020/image/index/wx_code.jpg") 0 0 no-repeat;
+    overflow: hidden;
+    text-indent: -9999px;
+}
+ul.ce_menu>div.wx_code>div.wx_box{
+    position: absolute;
+    top:-50px;left:60px;
+    transition: all linear 300ms;
+}
+ul.ce_menu>div.gotop a{
+    height: 40px;
+    background: #e4e4e4;
 }
 </style>

@@ -140,7 +140,7 @@
                                 <span>{{userName}}</span>
                             </a>
                             <ul class="user_drop" :style="{display:isBlock?'block':'none'}">
-                                <li><a href="javascript:;">账号设置</a></li>
+                                <li><a href="javascript:;" @click="goSetting">账号设置</a></li>
                                 <li><a href="javascript:;">修改密码</a></li>
                                 <li><a href="javascript:;">我的足迹</a></li>
                                 <li><a href="javascript:;">我的评论</a></li>
@@ -210,6 +210,10 @@ export default {
         this.loadMore();
     },
     methods:{
+        // 前往用户中心
+        goSetting(){
+            this.$router.push("/setting");
+        },
         //用户菜单栏是否显示
         ulShow(n){
             if(n==1){

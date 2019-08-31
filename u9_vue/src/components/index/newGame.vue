@@ -5,7 +5,7 @@
                 <h2>新游推荐</h2>
             </div>
             <div class="mt-20 clear con">
-                <div class="gamebox right" v-for="(item,i) of ngList" :key="i">
+                <div class="gamebox" v-for="(item,i) of ngList" :key="i" :class="{right:canRight[i]}" @mouseenter="doRight(i)">
                     <a href="javascript:;">
                         <li v-text="item.ng_scr"></li>
                         <div class="gamepic">
@@ -30,16 +30,28 @@
 export default {
     data(){
         return {
-            ngList:[""]
+            ngList:[""],
+            canRight:[]
         }
     },
     created() {
         this.loadmore()
+        setTimeout(function(){console.log(11111)},5000);
     },
     methods: {
+        doRight(i){
+            for(var j in this.canRight){
+                this.canRight[j]="";
+            }
+            this.$set(this.canRight,i,true);
+        },
         loadmore(){
             this.axios.get("newgame").then(res=>{
                 this.ngList=res.data;
+                for(var i in this.ngList){
+                    this.canRight.push('');
+                }
+                this.canRight[0]=true;
             }).catch(err=>{
                 console.log(err)
             });
@@ -53,6 +65,8 @@ export default {
 div.newgame>div.newgame_tit{
     width:1200px;
     margin:0 auto;
+    height:30px;
+    overflow: hidden;
 }
 div.newgame>div.newgame_tit h2{
     float: left;
