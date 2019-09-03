@@ -17,18 +17,47 @@
             </div>
         </div>
         <div class="w-1200 mt-30 clear">
+            <!-- 左边信息栏 -->
             <div class="float-left left_bar">
                 <div class="user_info">
-                    
+                    <div class="user_img">
+                        <img src="http://localhost:3020/image/header/middle.gif" alt="">
+                        <h4>18782826336</h4>
+                    </div>
+                    <p>累积登录天数</p>
+                    <span>1</span>
+                    <p>上次登录</p>
+                    <span>2019-09-03 未知</span>
                 </div>
-                <ul></ul>
+                <ul class="left_nav mt-30">
+                    <li :class="{active:isActive[0]}" @click="change(0)"><a href="javascript:;">账号设置</a></li>
+                    <li :class="{active:isActive[1]}" @click="change(1)"><a href="javascript:;">修改密码</a></li>
+                    <li :class="{active:isActive[2]}" @click="change(2)"><a href="javascript:;">我的足迹</a></li>
+                    <li :class="{active:isActive[3]}" @click="change(3)"><a href="javascript:;">我的评论</a></li>
+                </ul>
             </div>
+            <router-view></router-view>
         </div>
     </div>
 </template>
 <script>
 export default {
-    
+    data(){
+        return {
+            isActive:[true,"","",""]
+        }
+    },
+    methods:{
+        change(n){
+            this.isActive=new Array(4);
+            this.$set(this.isActive,n,true)
+            if(n==1){
+                this.$router.push("/setting/upwdSetting")
+            }else{
+                this.$router.push("/setting/userSetting")
+            }   
+        }
+    }
 }
 </script>
 <style scoped>
@@ -71,5 +100,68 @@ div.topnav a{
 }
 div.topnav>div>a.icon_out{
     background-position: -115px 0;
+}
+/*左边信息栏*/
+/*用户信息*/
+div.left_bar{
+    width:280px;
+    background:#fff;
+    padding:30px 25px;
+    height:628px;
+    overflow: hidden;
+}
+div.user_info>div.user_img{
+    width:230px;
+    margin:0 auto;
+}
+div.user_img img{
+    width:80px;height:80px;
+    display: block;
+    border-radius:50%;
+    margin:0 auto;
+}
+div.user_img h4{
+    font-size:18px;
+    line-height: 44px;
+    height:44px;
+    overflow: hidden;
+    color:#333;
+    text-align: center;
+}
+div.user_info p{
+    font-size:14px;
+    color:#999999;
+    line-height: 24px;
+    padding-top:15px;
+    text-align: center;
+}
+div.user_info span{
+    font-size:15px;
+    color:#333;
+    line-height: 30px;
+    text-align: center;
+    display: block;
+}
+/*用户设置*/
+ul.left_nav li{
+    width:230px;height:42px;
+    background: #eeeeee;
+    margin-top:3px;
+    text-align: center;
+    line-height: 42px;
+    cursor: pointer;
+    font-size:15px;
+}
+ul.left_nav li a{
+    display: block;
+    color:#666666;
+}
+ul.left_nav li.active{
+    color:#fff;
+    background:#ff7700;
+}
+ul.left_nav li.active a{
+    display: block;
+    color:#fff;
 }
 </style>

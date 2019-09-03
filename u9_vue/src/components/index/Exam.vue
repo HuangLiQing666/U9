@@ -1,28 +1,36 @@
 <template>
     <div>
-        <p>{{num[0]}}</p>
-        <p>{{num[1]}}</p>
-        <p>{{num[2]}}</p>
-        <button @click="change">切换</button>
+        <p ref="p1">{{n}}</p>
+        <p>{{n}}</p>
+        <p>{{n}}</p>
+        <button @click="change">go</button>
     </div>
 </template>
 <script>
 export default {
     data(){
         return {
-            num:["上","中","下"],
-            str:0
+            n:1,
         }
     },
     methods:{
+        one(){
+            this.n=2;
+            console.log("one")
+        },
+        two(){
+            this.n=2;
+            console.log("two")
+        },
+        three(){
+            this.n=2;
+            console.log("three")
+        },
         change(){
-            this.$store.commit('setUid',5)
-            var uid=this.$store.getters.getUid;
-            console.log(uid)
-            // this.str=1;
-            //  this.$set(this.num,0,"一")
-            // this.num[0]="一";
-            // console.log(this.num)
+            this.one();
+            this.two();
+            this.three();
+            console.log(this.$refs.p1.textContent)
         }
     }
 }
