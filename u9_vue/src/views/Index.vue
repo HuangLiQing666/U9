@@ -397,7 +397,6 @@ export default {
         },
         offsetT(){
             this.offsetTop=this.$refs.newstab.offsetTop;
-            console.log(this.offsetTop)
         },
         change(e){
             this.n=Number(e.target.dataset.target);

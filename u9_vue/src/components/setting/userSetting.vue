@@ -1,34 +1,29 @@
 <template>
     <div>
-       <div class="right_bar">
-            <ul class="settings mt-30">
-                <li>
-                    <span>我的昵称</span>
-                    <input type="text" class="set_nickname" value="18782826336" disabled>
-                </li>
-                <li>
-                    <span class="my_headimg">我的头像</span>
-                    <div class="head_img"><img src="http://localhost:3020/image/header/middle.gif" alt=""></div>
-                    <div class="set_headimg"><button>上传头像</button></div>
-                </li>
-                <li>
-                    <span>个人签名</span>
-                    <textarea class="my_textarea" name="signstr"  cols="60" rows="6"></textarea>
-                </li>
-                <li>
-                    <span>手机号码</span>
-                    <p>18782826336</p>
-                </li>
-                <li>
-                    <span>身份证号</span>
-                    <p><a href="javascript:;">实名认证</a></p>
-                    <p>根据国家相关法律要求，必须实名认证，我们承诺不会泄露你的信息</p>
-                </li>
-            </ul>
-            <div>
-
-            </div>
-       </div>
+        <ul class="settings mt-30">
+            <li>
+                <span>我的昵称</span>
+                <input type="text" class="set_nickname" value="18782826336" disabled>
+            </li>
+            <li>
+                <span class="my_headimg">我的头像</span>
+                <div class="head_img"><img src="http://localhost:3020/image/header/middle.gif" alt=""></div>
+                <div class="set_headimg"><button>上传头像</button></div>
+            </li>
+            <li>
+                <span>个人签名</span>
+                <textarea class="my_textarea" name="signstr"  cols="60" rows="6"></textarea>
+            </li>
+            <li>
+                <span>手机号码</span>
+                <p>18782826336</p>
+            </li>
+            <li>
+                <span>身份证号</span>
+                <p><a href="javascript:;">实名认证</a></p>
+                <p>根据国家相关法律要求，必须实名认证，我们承诺不会泄露你的信息</p>
+            </li>
+        </ul>
     </div>
 </template>
 <script>
@@ -37,25 +32,26 @@ export default {
 }
 </script>
 <style scoped>
-div.right_bar{
-    width:890px;
-    background: #fff;
-    padding:10px 30px;
-    min-height:608px;
-    overflow: hidden;
-}
-div.right_bar>ul.settings li{
+
+ul.settings li{
     margin-top:20px;
     clear: both;
 }
-div.right_bar>ul.settings li span{
+ul.settings li:after{
+    content: "";
+    display: block;
+    height:0;
+    clear: both;
+    visibility: hidden;
+}
+ul.settings li span{
     float: left;
     width:76px;
     font-size:15px;
     color:#333333;
     line-height: 42px;
 }
-div.right_bar>ul.settings li .set_nickname{
+ul.settings li .set_nickname{
     float: left;
     width:289px;
     height:40px;
@@ -65,7 +61,7 @@ div.right_bar>ul.settings li .set_nickname{
     text-indent: 10px;
     border-radius: 5px;
 }
-div.right_bar>ul.settings li .my_headimg{
+ul.settings li .my_headimg{
     line-height: 94px;
 }
 div.head_img{
@@ -96,9 +92,16 @@ div.set_headimg button:hover{
     color:#fff;
     transition: all 0.3s;
 }
-div.right_bar>ul.settings li .my_textarea{
+ul.settings li .my_textarea{
     width:459px;height:136px;
     border:1px solid #dddddd;
     padding:10px;
+}
+ul.settings li p{
+    font-size:14px;
+    line-height: 42px;
+    color:#999999;
+    padding-left:10px;
+    float: left;
 }
 </style>

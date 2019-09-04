@@ -137,7 +137,7 @@
                         <div class="user_name" @mouseover="ulShow(1)" @mouseout="ulShow(-1)">
                             <a href="javascript:;">
                                 <img src="http://localhost:3020/image/header/middle.gif" alt="">
-                                <span>{{userName}}</span>
+                                <span :userName="userName">{{userName}}</span>
                             </a>
                             <ul class="user_drop" :style="{display:isBlock?'block':'none'}">
                                 <li><a href="javascript:;" @click="goSetting">账号设置</a></li>
@@ -212,7 +212,7 @@ export default {
     methods:{
         // 前往用户中心
         goSetting(){
-            this.$router.push("/setting");
+            this.$router.push("/setting/userSetting");
         },
         //用户菜单栏是否显示
         ulShow(n){
@@ -340,6 +340,7 @@ export default {
                     var uid=res.data.uid
                     this.$store.commit('setUid',uid);
                     this.userName=res.data.nickName;
+                    console.log(this.userName)
                     setTimeout(()=>{this.signSuc=false},2000);
                 }else if(code==2){
                     this.nicName=true;

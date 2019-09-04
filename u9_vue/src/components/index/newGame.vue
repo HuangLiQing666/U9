@@ -36,7 +36,6 @@ export default {
     },
     created() {
         this.loadmore()
-        setTimeout(function(){console.log(11111)},5000);
     },
     methods: {
         doRight(i){

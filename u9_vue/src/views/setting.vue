@@ -36,16 +36,28 @@
                     <li :class="{active:isActive[3]}" @click="change(3)"><a href="javascript:;">我的评论</a></li>
                 </ul>
             </div>
-            <router-view></router-view>
+            <div class="right_bar">
+                <router-view></router-view>
+                <div class="btn_box clear">
+                    <button class="float-left btn_sub">提交</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <script>
 export default {
+    props:{
+        userName:{default:''}
+    },
     data(){
         return {
             isActive:[true,"","",""]
         }
+    },
+    mounted() {
+        console.log(this.$store.getters.getUid)
+        console.log(this.userName)
     },
     methods:{
         change(n){
@@ -163,5 +175,29 @@ ul.left_nav li.active{
 ul.left_nav li.active a{
     display: block;
     color:#fff;
+}
+div.right_bar{
+    width:890px;
+    background: #fff;
+    padding:10px 30px;
+    min-height:608px;
+    overflow: hidden;
+}
+div.btn_box{
+    height:48px;
+    margin:40px 0 0 90px;
+    overflow: hidden;
+}
+div.btn_box button{
+    width:130px;height:48px;
+    border:none;
+    line-height: 48px;
+    text-align: center;
+    font-size:16px;
+    color:#fff;
+    border-radius:2px;
+}
+div.btn_box button.btn_sub{
+    background: #ff7700;
 }
 </style>
