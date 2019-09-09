@@ -137,11 +137,11 @@
                         <div class="user_name" @mouseover="ulShow(1)" @mouseout="ulShow(-1)">
                             <a href="javascript:;">
                                 <img src="http://localhost:3020/image/header/middle.gif" alt="">
-                                <span :userName="userName">{{userName}}</span>
+                                <span>{{userName}}</span>
                             </a>
                             <ul class="user_drop" :style="{display:isBlock?'block':'none'}">
                                 <li><a href="javascript:;" @click="goSetting">账号设置</a></li>
-                                <li><a href="javascript:;">修改密码</a></li>
+                                <li><a href="javascript:;" @click="setUpwd">修改密码</a></li>
                                 <li><a href="javascript:;">我的足迹</a></li>
                                 <li><a href="javascript:;">我的评论</a></li>
                             </ul>
@@ -210,6 +210,10 @@ export default {
         this.loadMore();
     },
     methods:{
+        // 前往修改密码
+        setUpwd(){
+            console.log(sessionStorage.getItem("uname"))
+        },
         // 前往用户中心
         goSetting(){
             this.$router.push("/setting/userSetting");
@@ -224,12 +228,13 @@ export default {
         },
         // 退出登录状态
         logOut(){
+            sessionStorage.removeItem('uname');
             this.axios.get("cleanUser").then(res=>{
-                console.log(res.data.msg)
+                console.log(res.data.msg);
+                this.loadMore();
             }).catch(err=>{
                 console.log(err)
             });
-            this.loadMore();
         },
         // 添加昵称
         setNic(){
@@ -295,6 +300,7 @@ export default {
                     this.nicName=true;
                     this.nameShow=true;
                     this.userName=phone;
+                    sessionStorage.setItem('uname',phone);
                     var uid=res.data.uid
                     this.$store.commit('setUid',uid);
                     setTimeout(()=>{this.signSuc=false},2000);
@@ -338,14 +344,16 @@ export default {
                     this.isShow=true;
                     this.isLogin=true;
                     var uid=res.data.uid
+                    var userName=res.data.nickName;
                     this.$store.commit('setUid',uid);
-                    this.userName=res.data.nickName;
-                    console.log(this.userName)
+                    this.userName=userName;
+                    sessionStorage.setItem("uname",userName);
                     setTimeout(()=>{this.signSuc=false},2000);
                 }else if(code==2){
                     this.nicName=true;
                     this.nameShow=true;
                     this.userName=uname;
+                    sessionStorage.setItem("uname",uname);
                 }
             }).catch(err=>{
                 console.log(err);
@@ -407,7 +415,9 @@ export default {
         loadMore(){
             this.axios.get("getUid").then(res=>{
                 var code=res.data.code;
+                console.log(res)
                 var nickName=res.data.nickName;
+                var uname=res.data.uname;
                 var uid=res.data.uid;
                 if(code==1){
                     this.nameShow=true;
@@ -416,7 +426,10 @@ export default {
                 }else if(code==-1){
                     this.nameShow=false;
                 }else if(code==-2){
+                    this.nameShow=true;
                     this.nicName=true;
+                    this.userName=uname;
+                    this.$store.commit('setUid',uid);
                 }
             }).catch(err=>{
                 console.log(err);

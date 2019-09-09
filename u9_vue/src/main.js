@@ -18,7 +18,10 @@ Vue.use(ElementUI);
 
 Vue.use(Vuex);
 var store=new Vuex.Store({
-  state:{uid:0},
+  state:{
+    uid:0,
+    uname:''
+  },
   mutations:{
     setUid(state,uid){
       state.uid=uid;

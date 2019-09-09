@@ -3,7 +3,7 @@
         <ul class="settings mt-30">
             <li>
                 <span>我的昵称</span>
-                <input type="text" class="set_nickname" value="18782826336" disabled>
+                <input type="text" class="set_nickname" :value="userName" disabled>
             </li>
             <li>
                 <span class="my_headimg">我的头像</span>
@@ -28,8 +28,21 @@
 </template>
 <script>
 export default {
-    
+     data(){
+        return {
+            userName:''
+        }
+    },
+    created() {
+        this.loadMore()
+    },
+    methods: {
+        loadMore(){
+            this.userName=sessionStorage.getItem("uname");
+        }
+    },
 }
+
 </script>
 <style scoped>
 

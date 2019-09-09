@@ -179,9 +179,9 @@ app.get("/getUid",(req,res)=>{
     if(uid==undefined){
         res.send({code:-1,msg:"未登录"})
     }else{
-        pool.query("SELECT nick_name FROM u9_user WHERE uid=?",[uid],(err,result)=>{
-            if(result.length==0){
-                res.send({code:-2,msg:"请设置一个昵称"})
+        pool.query("SELECT nick_name,uname FROM u9_user WHERE uid=?",[uid],(err,result)=>{
+            if(result[0].nick_name==''){
+                res.send({code:-2,msg:"请设置一个昵称",uid:uid,uname:result[0].uname})
             }else{
                 res.send({code:1,msg:"已登录",uid:uid,nickName:result[0].nick_name});
             }

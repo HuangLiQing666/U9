@@ -8,7 +8,7 @@
                     </a>
                 </h1>
                 <div class="user_id float-left">
-                    <p>欢迎你</p>
+                    <p>欢迎你,{{userName}}</p>
                 </div>
                 <div class="float-right topnav">
                     <div><a href="javascript:;">官网首页</a></div>
@@ -22,7 +22,7 @@
                 <div class="user_info">
                     <div class="user_img">
                         <img src="http://localhost:3020/image/header/middle.gif" alt="">
-                        <h4>18782826336</h4>
+                        <h4>{{userName}}</h4>
                     </div>
                     <p>累积登录天数</p>
                     <span>1</span>
@@ -47,16 +47,14 @@
 </template>
 <script>
 export default {
-    props:{
-        userName:{default:''}
-    },
     data(){
         return {
-            isActive:[true,"","",""]
+            isActive:[true,"","",""],
+            userName:""
         }
     },
-    mounted() {
-        console.log(this.$store.getters.getUid)
+    created() {
+        this.loadMore();
         console.log(this.userName)
     },
     methods:{
@@ -68,6 +66,9 @@ export default {
             }else{
                 this.$router.push("/setting/userSetting")
             }   
+        },
+        loadMore(){
+            this.userName=sessionStorage.getItem("uname");
         }
     }
 }
