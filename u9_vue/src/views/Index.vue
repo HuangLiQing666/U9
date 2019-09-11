@@ -112,7 +112,7 @@
                     </div>
                 </div>
             </div>
-            <div class="w-1200" ref="newstab">
+            <div class="w-1200">
                 <div class="clear mt-25">
                     <div class="news float-left">
                         <div class="news_tab clear" :class="{newsFixed:isFix}" @scroll.native="isfixed">
@@ -341,15 +341,15 @@
         </article>
         <my-footer></my-footer>
         <ul class="ce_menu">
-            <li><a href="javascript:;">新闻</a></li>
-            <li><a href="javascript:;">视频</a></li>
-            <li><a href="javascript:;">新游</a></li>
-            <li><a href="javascript:;">网游</a></li>
+            <li><a href="javascript:;" @click="anchor(1)">新闻</a></li>
+            <li><a href="javascript:;" @click="anchor(2)">视频</a></li>
+            <li><a href="javascript:;" @click="anchor(3)">新游</a></li>
+            <li><a href="javascript:;" @click="anchor(4)">网游</a></li>
             <div class="wx_code" @mouseover="scan(1)" @mouseout="scan(-1)">
                 <a href="javascript:;"></a>
                 <div class="wx_box" :style="{display:canScan?'block':'none'}"><img src="http://localhost:3020/image/index/wx_code_large.jpg"></div>
             </div>
-            <div class="gotop"><a href="javascript:;">TOP</a></div>
+            <div class="gotop"><a href="javascript:;" @click="anchor(0)">TOP</a></div>
         </ul>
     </div>
 </template>
@@ -368,26 +368,43 @@ export default {
             n:0,
             isOpen:[0,1,2,3],
             isFix:false,
-            offsetTop:0,
         }
     },
     created(){
         this.loadMore();
     },
     mounted(){
-        this.offsetT();
-        window.addEventListener('scroll',()=>{
+        window.addEventListener('scroll',this.handleScroll);
+    },
+    destroyed () {
+        window.removeEventListener('scroll', this.handleScroll)
+    },
+    methods:{
+        anchor(l){
+            switch(true){
+                case l==0:window.scrollTo(0,0)
+                break;
+                case l==1:window.scrollTo(0,1220)
+                break;
+                case l==2:console.log(2)
+                break;
+                case l==3:console.log(3)
+                break;
+                case l==4:console.log(4)
+                break;
+            }
+        },
+        handleScroll(){
             var scrollTop=document.documentElement.scrollTop ||
                           document.body.scrollTop || 
                           window.pageYOffset;
+            this.scrollTop=scrollTop;
             if(scrollTop>=1220&&scrollTop<=4811){
                 this.isFix=true;
             }else{
                 this.isFix=false;
             }
-        }, true);
-    },
-    methods:{
+        },
         scan(n){
             if(n==1){
                 this.canScan=true;
@@ -395,10 +412,7 @@ export default {
                 this.canScan=false;
             }
         },
-        offsetT(){
-            this.offsetTop=this.$refs.newstab.offsetTop;
-        },
-        change(e){
+        change(e){ 
             this.n=Number(e.target.dataset.target);
             for(var i in this.shows){
                 if(i==e.target.dataset.target){
