@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="index_head_carousel" @mouseenter="mouse(-1)" @mouseleave="mouse(1)">
+        <div id="index_head_carousel" @mouseenter="mouse(1)" @mouseleave="mouse(-1)">
             <div class="hd">
                 <ul id="carousel_pic" :style="{marginLeft:left}" :class="isOn?'on':''">
                     <li v-for="(item,i) of carList" :key="i">
@@ -16,7 +16,7 @@
             </div>
             <div class="bd">
                 <ul class="carousel_nav">
-                    <li v-for="(item,i) of list" :key="i" :class="item==isActive?'active':''" @click="change(item)"></li>
+                    <li v-for="(item,i) of carList" :key="i" :class="i==isActive?'active':''" @click="change(i)"></li>
                 </ul>
             </div>
         </div>
@@ -29,12 +29,10 @@ export default {
         return {
             carList:[{default:""}],
             left:0,
-            isOn:true,
-            list:[1,2,3,4,5,6],
-            isActive:1,
             i:0,
-            canCarousel:true,
-            
+            isOn:true,
+            isActive:0,
+            canMove:true,
         }
     },
     created(){
@@ -43,44 +41,61 @@ export default {
     },
     mounted(){
         this.moveTo();
-        // this.canCarousel=true;
     },
     methods:{
         mouse(n){
-            // if(n==-1){
-            //     this.canCarousel=false;
-            // }else{
-            //     this.canCarousel=true;
-            //     this.moveTo();
-            // }
+            if(n==1){
+                this.canMove=false;
+            }else{
+                setTimeout(()=>{
+                    if(!this.canMove){
+                        this.canMove=true;
+                        this.moveTo();
+                    }
+                },2000)
+            }
         },
         change(l){
-            // var to=l-1;
-            // this.moveTo(to);
+            this.canMove=false;
+            this.move(l)
+            setTimeout(()=>{
+                if(!this.canMove){
+                    this.canMove=true;
+                    this.moveTo();
+                }
+            },2000)
         },
-        moveTo(to){
-            var timer=setInterval(()=>{
-                // if(!this.canCarousel){
-                //     clearInterval(timer);
-                // }
-                if(to==undefined){
-                    this.i++;
-                }else{
-                    this.i=to;
-                }
-                // 轮播距离
-                var LIWIDTH=770;
-                this.isOn=true;
-                this.left=-LIWIDTH*this.i+"px";
-                if(this.i==6){
-                    this.i=0;
-                    setTimeout(()=>{
-                        this.isOn=false;
-                        this.left=0;
-                    },500)
-                }
-                this.isActive=this.i+1;
-            },2000);
+        moveTo(){
+            var timer=()=>{
+                setTimeout(()=>{
+                    if(this.canMove){
+                        this.move()
+                        timer()
+                    }else{
+                        clearTimeout(this.timer)
+                        timer=null;
+                    }
+                },2000)
+            }
+            timer()
+        },
+        move(to){
+            if(to==undefined){
+                this.i++; 
+            }else{
+                this.i=to;
+            }
+            var LIWIDTH=770;
+            this.isOn=true;
+            this.left=-LIWIDTH*this.i+'px';
+            if(this.i==6){
+                this.i=0;
+                setTimeout(()=>{
+                    this.isOn=false;
+                    this.left=0;
+                },500)
+            }
+            this.isActive=this.i;
         },
         // 页面数据
         loadMore(){

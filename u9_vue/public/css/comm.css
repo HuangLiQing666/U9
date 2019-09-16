@@ -41,3 +41,10 @@ h1, h2, h3, h4, h5, h6{
     margin:0 auto;
 }
 .w400{width:400px;}
+.clear_fix::after{
+    content: "";
+    display: block;
+    height:0;
+    clear: both;
+    visibility: hidden;
+}

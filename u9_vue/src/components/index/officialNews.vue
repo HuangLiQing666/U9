@@ -115,18 +115,6 @@ export default {
             this.axios.get("synews").then(res=>{
                 var n=res.data;
                 for(var i in n){
-                    // if(i<=3){
-                    //     this.newsPic.push(n[i].ofc_pic)
-                    // }
-                    // if(i<=4){
-                    //     this.firNews.push(n[i])
-                    // }
-                    // if(4<i&&i<=16){
-                    //     this.secNews.push(n[i]);
-                    // }
-                    // if(i>16){
-                    //     this.lasNews.push(n[i]);
-                    // }
                     switch(true){
                         case i<=3:this.newsPic.push(n[i]);
                         case i<=4:this.firNews.push(n[i]);

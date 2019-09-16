@@ -220,6 +220,18 @@ app.get("/newgame",(req,res)=>{
     })
 }) 
 
+app.get("/pics",(req,res)=>{
+    console.log(11)
+    // var data="";
+    // req.on("data",function(chunk){
+    //     data+=chunk;
+    // });
+    // req.on("end",function(){
+    //     var params=JSON.parse(data);
+    //     console.log(params)
+    // })
+})
+
 
 
 
